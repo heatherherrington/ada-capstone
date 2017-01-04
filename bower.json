@@ -1,0 +1,22 @@
+{
+  "name": "ada-capstone",
+  "homepage": "https://github.com/heatherherrington/ada-capstone",
+  "authors": [
+    "heatherherrington <redherring@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "react": "^15.1.0"
+  }
+}
