@@ -2,6 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Sanctuary Supplement</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
@@ -22,12 +23,12 @@
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/babel/browser.min.js') }}"></script>
     <script type="text/babel">
-    
+
       /*** @jsx React.DOM */
 
       var realPython = React.createClass({
         render: function() {
-          return (<h2>Greetings, from Real Python!</h2>);
+          return (<h2>This uses React. Brilliant!</h2>);
         }
       });
 
