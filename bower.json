@@ -19,6 +19,10 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "react": "^15.1.0",
-    "babel": "^5.8.38"
+    "babel": "^5.8.38",
+    "jquery": "^3.1.1",
+    "requirejs": "^2.3.2",
+    "almond": "^0.3.3",
+    "jsx-requirejs-plugin": "^0.6.2"
   }
 }
