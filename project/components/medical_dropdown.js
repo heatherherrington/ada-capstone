@@ -12,8 +12,6 @@ class MedicalDropdown extends Component {
 
     );
   }
-
-  
 }
 
 export default MedicalDropdown;

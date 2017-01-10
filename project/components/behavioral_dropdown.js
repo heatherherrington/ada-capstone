@@ -12,8 +12,6 @@ class BehavioralDropdown extends Component {
 
     );
   }
-
-
 }
 
 export default BehavioralDropdown;

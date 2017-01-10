@@ -12,8 +12,6 @@ class AnimalDropdown extends Component {
 
     );
   }
-
-
 }
 
 export default AnimalDropdown;
