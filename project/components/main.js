@@ -1,11 +1,11 @@
 import React from 'react';
 
 const Main = () => {
-  return (
-    <nav>
-
-    </nav>
-  );
+  render: function() {
+    return (
+      <h2>Blah blah blah</h2>
+    );
+  }
 };
 
 export default Main;

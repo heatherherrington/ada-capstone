@@ -5,14 +5,15 @@ import Footer from './components/footer';
 import Main from './components/main';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
+  //
+  // }
 
-  }
-
-  render() {
+  render: function() {
     return (
       <div>
+        <h1>Testing</h1>
         <Header />
         <Main  />
         <Footer />
