@@ -14,5 +14,19 @@
     <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/babel/browser.min.js') }}"></script>
+    <script type="text/babel">
+ 		  /*** @jsx React.DOM */
+		  var realPython = React.createClass({
+       render: function() {
+          return (<h2>This uses React. Brilliant!</h2>);
+        }
+      });
+
+      ReactDOM.render(
+       React.createElement(realPython, null),
+       document.getElementById('content')
+      );		
+
+    </script>
   </body>
 </html>
