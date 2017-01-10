@@ -14,7 +14,8 @@
     "bower_components",
     "test",
     "tests",
-    "./project/static/bower_components"
+    "./project/static/bower_components",
+    "src/static/vendors"
   ],
   "dependencies": {
     "bootstrap": "^3.3.6",

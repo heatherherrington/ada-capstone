@@ -1,3 +1,1 @@
-{
-  "directory": "./project/static/bower_components"
-}
+{"directory": "src/static/vendors"}
