@@ -18,5 +18,9 @@
   "homepage": "https://github.com/heatherherrington/ada-capstone#readme",
   "devDependencies": {
     "bower": "^1.8.0"
+  },
+  "dependencies": {
+    "babel-preset-react": "^6.16.0",
+    "bower": "^1.8.0"
   }
 }
