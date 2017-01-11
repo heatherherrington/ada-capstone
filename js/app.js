@@ -4,22 +4,34 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Main from './components/main';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+// class App extends Component {
+//   constructor(props) {
+//     super(props);
+//   }
+//
+//   render() {
+//     return (
+//       <div>
+//         <Header />
+//         <Main  />
+//         <Footer />
+//       </div>
+//     );
+//   }
+// }
 
+export default React.createClass({
   render() {
     return (
       <div>
         <Header />
-        <Main  />
+        <Main />
         <Footer />
       </div>
-    );
+    )
   }
-}
+})
 
 // export default App;
 
-ReactDOM.render(<App />, document.getElementById('app'));
+// ReactDOM.render(<App />, document.getElementById('app'));
