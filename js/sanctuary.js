@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import Main from './components/main';
 
-class App extends Component {
+class Sanctuary extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,13 +12,13 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <Main  />
+        <h1>Sanctuary</h1>
         <Footer />
       </div>
     );
   }
 }
 
-// export default App;
+// export default Sanctuary;
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<Sanctuary />, document.getElementById('content'));
