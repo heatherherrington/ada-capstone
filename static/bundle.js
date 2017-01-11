@@ -19807,6 +19807,8 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
+	var _reactRouter = __webpack_require__(164);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// class App extends Component {
@@ -19833,6 +19835,15 @@
 	      null,
 	      _react2.default.createElement(_header2.default, null),
 	      _react2.default.createElement(_main2.default, null),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/sanctuary' },
+	          'Sanctuary'
+	        )
+	      ),
 	      _react2.default.createElement(_footer2.default, null)
 	    );
 	  }
@@ -25712,6 +25723,8 @@
 
 	var _footer2 = _interopRequireDefault(_footer);
 
+	var _reactRouter = __webpack_require__(164);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// class Animal extends Component {
@@ -25777,6 +25790,8 @@
 
 	var _footer2 = _interopRequireDefault(_footer);
 
+	var _reactRouter = __webpack_require__(164);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// class Sanctuary extends Component {
@@ -25806,6 +25821,15 @@
 	        'h1',
 	        null,
 	        'Sanctuary'
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/animal' },
+	          'Animal'
+	        )
 	      ),
 	      _react2.default.createElement(_footer2.default, null)
 	    );
