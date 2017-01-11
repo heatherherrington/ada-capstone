@@ -19808,7 +19808,7 @@
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19838,18 +19838,29 @@
 	  }
 
 	  _createClass(Header, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
+	      var headerStyle = {
+	        padding: 30,
+	        // margin: 10,
+	        backgroundColor: "lightgrey",
+	        color: "black",
+	        display: "block",
+	        // fontFamily: "monospace",
+	        fontSize: "32",
+	        textAlign: "center"
+	      };
+
 	      return _react2.default.createElement(
-	        'div',
-	        null,
+	        "div",
+	        { style: headerStyle },
 	        _react2.default.createElement(
-	          'nav',
+	          "nav",
 	          null,
 	          _react2.default.createElement(
-	            'h1',
+	            "h1",
 	            null,
-	            'Sanctuary Supplement'
+	            "Sanctuary Supplement"
 	          )
 	        )
 	      );
@@ -19867,7 +19878,7 @@
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19897,12 +19908,23 @@
 	  }
 
 	  _createClass(Footer, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
+	      var footerStyle = {
+	        padding: 10,
+	        // margin: 10,
+	        backgroundColor: "lightgrey",
+	        color: "black",
+	        display: "block",
+	        // fontFamily: "monospace",
+	        // fontSize: "32",
+	        textAlign: "center"
+	      };
+
 	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Copyright 2017'
+	        "div",
+	        { style: footerStyle },
+	        "Copyright 2017"
 	      );
 	    }
 	  }]);
