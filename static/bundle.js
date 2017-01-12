@@ -19811,22 +19811,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// class App extends Component {
-	//   constructor(props) {
-	//     super(props);
-	//   }
-	//
-	//   render() {
-	//     return (
-	//       <div>
-	//         <Header />
-	//         <Main  />
-	//         <Footer />
-	//       </div>
-	//     );
-	//   }
-	// }
-
 	exports.default = _react2.default.createClass({
 	  displayName: 'app',
 	  render: function render() {
@@ -19848,10 +19832,6 @@
 	    );
 	  }
 	});
-
-	// export default App;
-
-	// ReactDOM.render(<App />, document.getElementById('app'));
 
 /***/ },
 /* 161 */
@@ -25727,22 +25707,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// class Animal extends Component {
-	//   constructor(props) {
-	//     super(props);
-	//   }
-	//
-	//   render() {
-	//     return (
-	//       <div>
-	//         <Header />
-	//         <h1>Animal!</h1>
-	//         <Footer />
-	//       </div>
-	//     );
-	//   }
-	// }
-
 	exports.default = _react2.default.createClass({
 	  displayName: 'animal',
 	  render: function render() {
@@ -25759,10 +25723,6 @@
 	    );
 	  }
 	});
-
-	// export default Animal;
-
-	// ReactDOM.render(<Animal />, document.getElementById('content'));
 
 /***/ },
 /* 228 */
@@ -25794,22 +25754,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// class Sanctuary extends Component {
-	//   constructor(props) {
-	//     super(props);
-	//   }
-	//
-	//   render() {
-	//     return (
-	//       <div>
-	//         <Header />
-	//         <h1>Sanctuary</h1>
-	//         <Footer />
-	//       </div>
-	//     );
-	//   }
-	// }
-
 	exports.default = _react2.default.createClass({
 	  displayName: 'sanctuary',
 	  render: function render() {
@@ -25835,8 +25779,6 @@
 	    );
 	  }
 	});
-
-	// ReactDOM.render(<Sanctuary />, document.getElementById('content'));
 
 /***/ }
 /******/ ]);
