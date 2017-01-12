@@ -11,10 +11,12 @@ sanctuaries = [
                 'name': 'Persephone',
                 'events': [
                     {
+                        'eventId': 1,
                         'task': 'teeth cleaning',
                         'due': '1/1/17'
                     },
                     {
+                        'eventId': 2,
                         'task': 'hoof trim',
                         'due': '5/23/17'
                     }
@@ -25,10 +27,12 @@ sanctuaries = [
                 'name': 'Carl',
                 'events': [
                     {
+                        'eventId': 1,
                         'task': 'teeth floating',
                         'due': '1/15/17'
                     },
                     {
+                        'eventId': 2,
                         'task': 'deworm',
                         'due': '4/23/17'
                     }
@@ -41,28 +45,32 @@ sanctuaries = [
         'name': u'Farm Friends',
         'animals': [
             {
-                'animalId': 3,
+                'animalId': 1,
                 'name': u'Louis',
                 'events': [
                     {
+                        'eventId': 1,
                         'task': u'teeth cleaning',
                         'due': u'5/1/17'
                     },
                     {
+                        'eventId': 2,
                         'task': u'deworming',
                         'due': u'4/23/17'
                     }
                 ]
             },
             {
-                'animalId': 4,
+                'animalId': 2,
                 'name': u'Isaac',
                 'events': [
                     {
+                        'eventId': 1,
                         'task': u'hoof maintenance',
                         'due': u'1/15/17'
                     },
                     {
+                        'eventId': 2,
                         'task': u'antibiotics',
                         'due': u'4/15/17'
                     }
@@ -80,51 +88,11 @@ def index():
 
 # API
 
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-
-# @app.route('/sanctuary/api/tasks/<int:task_id>', methods=['PUT'])
-# def update_task(task_id):
-#     task = [task for task in tasks if task['id'] == task_id]
-#     if len(task) == 0:
-#         abort(404)
-#     if not request.json:
-#         abort(400)
-#     if 'title' in request.json and type(request.json['title']) != unicode:
-#         abort(400)
-#     if 'description' in request.json and type(request.json['description']) is not unicode:
-#         abort(400)
-#     if 'done' in request.json and type(request.json['done']) is not bool:
-#         abort(400)
-#     task[0]['title'] = request.json.get('title', task[0]['title'])
-#     task[0]['description'] = request.json.get('description', task[0]['description'])
-#     task[0]['done'] = request.json.get('done', task[0]['done'])
-#     return jsonify({'task': task[0]})
-#
-# @app.route('/sanctuary/api/tasks/<int:task_id>', methods=['DELETE'])
-# def delete_task(task_id):
-#     task = [task for task in tasks if task['id'] == task_id]
-#     if len(task) == 0:
-#         abort(404)
-#     tasks.remove(task[0])
-#     return jsonify({'result': True})
-#
-# def make_public_task(task):
-#     new_task = {}
-#     for field in task:
-#         if field == 'id':
-#             new_task['uri'] = url_for('get_task', task_id=task['id'], _external=True)
-#         else:
-#             new_task[field] = task[field]
-#     return new_task
-
-
 # SANCTUARIES
 
 @app.route('/sanctuary/api/sanctuaries', methods=['GET'])
 def get_sanctuaries():
-    return jsonify({'sanctuaries': sanctuaries})
+    return jsonify({'sanctuaries': [make_public_sanctuary(sanctuary) for sanctuary in sanctuaries]})
 
 @app.route('/sanctuary/api/sanctuaries/<int:sanctuary_id>', methods=['GET'])
 def get_sanctuary(sanctuary_id):
@@ -144,11 +112,118 @@ def create_sanctuary():
     sanctuaries.append(sanctuary)
     return jsonify({'sanctuary': sanctuary}), 201
 
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
-# ANIMALS
+def make_public_sanctuary(sanctuary):
+    new_sanctuary = {}
+    for field in sanctuary:
+        if field == 'sanctuaryId':
+            new_sanctuary['uri'] = url_for('get_sanctuary', sanctuary_id=sanctuary['sanctuaryId'], _external=True)
+        else:
+            new_sanctuary[field] = sanctuary[field]
+    return new_sanctuary
 
 
-# EVENTS
+# ANIMALS - Need 'DELETE'
+animals = sanctuaries[0]['animals']
+
+@app.route('/sanctuary/api/animals', methods=['GET'])
+def get_animals():
+    return jsonify({'animals': [make_public_animal(animal) for animal in animals]})
+
+@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['GET'])
+def get_animal(animal_id):
+    animal = [animal for animal in animals if animal['animalId'] == animal_id]
+    if len(animal) == 0:
+        abort(404)
+    return jsonify({'animal': animal[0]})
+
+@app.route('/sanctuary/api/animals', methods=['POST'])
+def create_animal():
+    if not request.json or not 'name' in request.json:
+        abort(400)
+    animal = {
+        'animalId': animals[-1]['animalId'] + 1,
+        'name': request.json['name'],
+    }
+    animals.append(animal)
+    return jsonify({'animal': animal}), 201
+
+@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['DELETE'])
+def delete_animal(animal_id):
+    animal = [animal for animal in animals if animal['animalId'] == animal_id]
+    if len(animal) == 0:
+        abort(404)
+    animals.remove(animal[0])
+    return jsonify({'result': True})
+
+def make_public_animal(animal):
+    new_animal = {}
+    for field in animal:
+        if field == 'animalId':
+            new_animal['uri'] = url_for('get_animal', animal_id=animal['animalId'], _external=True)
+        else:
+            new_animal[field] = animal[field]
+    return new_animal
+
+# EVENTS - Need 'PUT', 'DELETE'
+events = sanctuaries[0]['animals'][0]['events']
+
+@app.route('/sanctuary/api/events', methods=['GET'])
+def get_events():
+    return jsonify({'events': [make_public_event(event) for event in events]})
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
+def get_event(event_id):
+    event = [event for event in events if event['eventId'] == event_id]
+    if len(event) == 0:
+        abort(404)
+    return jsonify({'event': event[0]})
+
+@app.route('/sanctuary/api/events', methods=['POST'])
+def create_event():
+    if not request.json or not 'task' in request.json:
+        abort(400)
+    event = {
+        'eventId': events[-1]['eventId'] + 1,
+        'task': request.json['task'],
+    }
+    events.append(event)
+    return jsonify({'event': event}), 201
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['PUT'])
+def update_event(event_id):
+    event = [event for event in events if event['eventId'] == event_id]
+    if len(event) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'task' in request.json and type(request.json['task']) != unicode:
+        abort(400)
+    if 'due' in request.json and type(request.json['due']) is not unicode:
+        abort(400)
+    event[0]['task'] = request.json.get('task', event[0]['task'])
+    event[0]['due'] = request.json.get('due', event[0]['due'])
+    return jsonify({'event': event[0]})
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['DELETE'])
+def delete_event(event_id):
+    event = [event for event in events if event['eventId'] == event_id]
+    if len(event) == 0:
+        abort(404)
+    events.remove(event[0])
+    return jsonify({'result': True})
+
+def make_public_event(event):
+    new_event = {}
+    for field in event:
+        if field == 'eventId':
+            new_event['uri'] = url_for('get_event', event_id=event['eventId'], _external=True)
+        else:
+            new_event[field] = event[field]
+    return new_event
 
 if __name__ == '__main__':
   app.run(debug=True)
