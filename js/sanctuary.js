@@ -4,22 +4,6 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { Link } from 'react-router';
 
-// class Sanctuary extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//
-//   render() {
-//     return (
-//       <div>
-//         <Header />
-//         <h1>Sanctuary</h1>
-//         <Footer />
-//       </div>
-//     );
-//   }
-// }
-
 export default React.createClass({
   render() {
     return (
@@ -32,5 +16,3 @@ export default React.createClass({
     )
   }
 })
-
-// ReactDOM.render(<Sanctuary />, document.getElementById('content'));

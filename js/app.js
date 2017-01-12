@@ -5,22 +5,6 @@ import Footer from './components/footer';
 import Main from './components/main';
 import { Link } from 'react-router';
 
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//
-//   render() {
-//     return (
-//       <div>
-//         <Header />
-//         <Main  />
-//         <Footer />
-//       </div>
-//     );
-//   }
-// }
-
 export default React.createClass({
   render() {
     return (
@@ -33,7 +17,3 @@ export default React.createClass({
     )
   }
 })
-
-// export default App;
-
-// ReactDOM.render(<App />, document.getElementById('app'));
