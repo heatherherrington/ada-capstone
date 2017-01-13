@@ -84,7 +84,8 @@ sanctuaries = [
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+    print('hi')
+    return render_template('index.html')
 
 # API
 
