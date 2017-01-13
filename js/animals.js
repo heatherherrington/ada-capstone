@@ -9,7 +9,7 @@ export default React.createClass({
     return (
       <div>
         <Header />
-        <h1>Animal</h1>
+        <h1>Testing</h1>
         <Footer />
       </div>
     )

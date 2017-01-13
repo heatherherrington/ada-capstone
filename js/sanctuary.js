@@ -27,7 +27,7 @@ export default React.createClass({
       console.log("rendering")
       var animals = this.state.animals.map((animal) =>
         <div>
-          <h3>{ animal.name }</h3>
+          <h3 key={animal.animalId}><Link to={`/animal/${animal.animalId}`}>{ animal.name }</Link></h3>
         </div>
       );
       return (
@@ -45,7 +45,6 @@ export default React.createClass({
         <Header />
         <h1>Sanctuary</h1>
         { this.runRender() }
-        <p><Link to="/animal">Animal</Link></p>
         <Footer />
       </div>
     )
