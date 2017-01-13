@@ -81,7 +81,7 @@
 
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
+	  { history: _reactRouter.browserHistory },
 	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _app2.default }),
 	  _react2.default.createElement(
 	    _reactRouter.Route,
@@ -25892,15 +25892,13 @@
 
 
 	  runRender: function runRender() {
-	    console.log("runRender!");
 	    if (this.state.animals[0] != null) {
-	      console.log("rendering");
 	      var animals = this.state.animals.map(function (animal) {
 	        return _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h3',
+	            'li',
 	            { key: animal.animalId },
 	            _react2.default.createElement(
 	              _reactRouter.Link,
@@ -25911,11 +25909,10 @@
 	        );
 	      });
 	      return _react2.default.createElement(
-	        'div',
+	        'ul',
 	        null,
 	        animals
 	      );
-	      console.log("I hate this.");
 	    }
 	  },
 
