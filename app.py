@@ -122,8 +122,7 @@ def make_public_sanctuary(sanctuary):
     for field in sanctuary:
         if field == 'sanctuaryId':
             new_sanctuary['uri'] = url_for('get_sanctuary', sanctuary_id=sanctuary['sanctuaryId'], _external=True)
-        else:
-            new_sanctuary[field] = sanctuary[field]
+        new_sanctuary[field] = sanctuary[field]
     return new_sanctuary
 
 
@@ -165,8 +164,7 @@ def make_public_animal(animal):
     for field in animal:
         if field == 'animalId':
             new_animal['uri'] = url_for('get_animal', animal_id=animal['animalId'], _external=True)
-        else:
-            new_animal[field] = animal[field]
+        new_animal[field] = animal[field]
     return new_animal
 
 # EVENTS - Need 'PUT', 'DELETE'
@@ -222,8 +220,7 @@ def make_public_event(event):
     for field in event:
         if field == 'eventId':
             new_event['uri'] = url_for('get_event', event_id=event['eventId'], _external=True)
-        else:
-            new_event[field] = event[field]
+        new_event[field] = event[field]
     return new_event
 
 if __name__ == '__main__':

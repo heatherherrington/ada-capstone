@@ -22,18 +22,15 @@ export default React.createClass({
   )},
 
   runRender: function() {
-    console.log("runRender!");
     if(this.state.animals[0] != null) {
-      console.log("rendering")
       var animals = this.state.animals.map((animal) =>
         <div>
-          <h3 key={animal.animalId}><Link to={`/animal/${animal.animalId}`}>{ animal.name }</Link></h3>
+          <li key={animal.animalId}><Link to={`/animal/${animal.animalId}`}>{ animal.name }</Link></li>
         </div>
       );
       return (
-        <div>{animals}</div>
+        <ul>{animals}</ul>
       )
-      console.log("I hate this.");
     }
   },
 

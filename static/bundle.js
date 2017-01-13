@@ -69,11 +69,11 @@
 
 	var _animals2 = _interopRequireDefault(_animals);
 
-	var _animal = __webpack_require__(230);
+	var _animal = __webpack_require__(228);
 
 	var _animal2 = _interopRequireDefault(_animal);
 
-	var _sanctuary = __webpack_require__(228);
+	var _sanctuary = __webpack_require__(229);
 
 	var _sanctuary2 = _interopRequireDefault(_sanctuary);
 
@@ -81,7 +81,7 @@
 
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
+	  { history: _reactRouter.browserHistory },
 	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _app2.default }),
 	  _react2.default.createElement(
 	    _reactRouter.Route,
@@ -25811,6 +25811,45 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Animal = _react2.default.createClass({
+	  displayName: 'Animal',
+	  componentDidMount: function componentDidMount() {
+	    this.setState({
+	      // route components are rendered with useful information, like URL params
+	      animal: findAnimalById(this.props.params.animalId)
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h2',
+	        null,
+	        this.state.animal.name
+	      )
+	    );
+	  }
+	});
+
+	exports.default = Animal;
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _reactDom = __webpack_require__(159);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -25829,7 +25868,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _jquery = __webpack_require__(229);
+	var _jquery = __webpack_require__(230);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -25853,15 +25892,13 @@
 
 
 	  runRender: function runRender() {
-	    console.log("runRender!");
 	    if (this.state.animals[0] != null) {
-	      console.log("rendering");
 	      var animals = this.state.animals.map(function (animal) {
 	        return _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'h3',
+	            'li',
 	            { key: animal.animalId },
 	            _react2.default.createElement(
 	              _reactRouter.Link,
@@ -25872,11 +25909,10 @@
 	        );
 	      });
 	      return _react2.default.createElement(
-	        'div',
+	        'ul',
 	        null,
 	        animals
 	      );
-	      console.log("I hate this.");
 	    }
 	  },
 
@@ -25899,7 +25935,7 @@
 	});
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36123,45 +36159,6 @@
 	return jQuery;
 	} );
 
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Animal = _react2.default.createClass({
-	  displayName: 'Animal',
-	  componentDidMount: function componentDidMount() {
-	    this.setState({
-	      // route components are rendered with useful information, like URL params
-	      animal: findAnimalById(this.props.params.animalId)
-	    });
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'h2',
-	        null,
-	        this.state.animal.name
-	      )
-	    );
-	  }
-	});
-
-	exports.default = Animal;
 
 /***/ }
 /******/ ]);
