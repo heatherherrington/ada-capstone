@@ -20,5 +20,6 @@ module.exports = {
     ]
   },
   plugins: [
-  ]
+  ],
+  devtool: 'cheap-module-eval-source-map'
 };

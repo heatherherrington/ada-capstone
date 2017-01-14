@@ -10,9 +10,8 @@ render((
   <Router history={browserHistory}>
     <Route path="/" component={App}/>
     {/* add the routes here */}
-    <Route path="/animals" component={Animals}>
-      <Route path="/animal/:animalId" component={Animal}/>
-    </Route>
+    <Route path="/animals" component={Animals}/>
+    <Route path="/animal/:animalId" component={Animal}/>
     <Route path="/sanctuary" component={Sanctuary}/>
   </Router>
 ), document.getElementById('app'))
