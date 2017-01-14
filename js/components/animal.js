@@ -1,7 +1,8 @@
 import React from 'react';
 import Header from './header';
+import Footer from './footer';
+import AnimalEvent from './animal_event';
 import $ from 'jquery';
-
 
 const Animal = React.createClass({
   getInitialState: function() {
@@ -33,6 +34,8 @@ const Animal = React.createClass({
       <div>
         <Header />
         { this.runRender() }
+        <AnimalEvent />
+        <Footer />
       </div>
     )
   }
