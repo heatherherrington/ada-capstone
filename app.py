@@ -81,7 +81,7 @@ sanctuaries = [
 ]
 
 # NON-API ROUTES
-
+@app.route('/sanctuary')
 @app.route('/')
 def index():
     print('hi')
@@ -126,7 +126,7 @@ def make_public_sanctuary(sanctuary):
     return new_sanctuary
 
 
-# ANIMALS - Need 'DELETE'
+# ANIMALS
 animals = sanctuaries[0]['animals']
 
 @app.route('/sanctuary/api/animals', methods=['GET'])
@@ -167,7 +167,7 @@ def make_public_animal(animal):
         new_animal[field] = animal[field]
     return new_animal
 
-# EVENTS - Need 'PUT', 'DELETE'
+# EVENTS
 events = sanctuaries[0]['animals'][0]['events']
 
 @app.route('/sanctuary/api/events', methods=['GET'])
