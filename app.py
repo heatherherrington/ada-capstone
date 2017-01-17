@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify, abort, make_response, request, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+db = SQLAlchemy(app)
 
 sanctuaries = [
     {
@@ -88,14 +90,142 @@ def index():
     print('hi')
     return render_template('index.html')
 
-# DATABASE
 
+# DATABASE
+# Create our database models
+# SANCTUARY
+class Sanctuary(db.Model):
+    __tablename__ = "sanctuaries"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+# ANIMAL
+class Animal(db.Model):
+    __tablename__ = "animals"
+    id = db.Column(db.Integer, primary_key=True)
+    # PROBABLY NEED TO CHANGE PRIMARY_KEY
+    sanctuaryId = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+# EVENT
+class Event(db.Model):
+    __tablename__ = "events"
+    id = db.Column(db.Integer, primary_key=True)
+    # PROBABLY NEED TO CHANGE PRIMARY_KEY
+    animalId = db.Column(db.Integer, primary_key=True)
+    task = db.Column(db.String(120), unique=True)
+    due = db.Column(db.String(120), unique=True)
+
+    def __init__(self, task):
+        self.task = task
+
+    def __repr__(self):
+        return '<Task %r>' % self.task
+
+    def __init__(self, due):
+        self.due = due
+
+    def __repr__(self):
+        return '<Due date %r>' % self.due
+
+
+# Save sanctuary name to database
+@app.route('/sanc', methods=['POST'])
+def sanc():
+    name = None
+    if request.method == 'POST':
+        name = request.form['name']
+        # Check that name does not already exist (not a great query, but works)
+        if not db.session.query(Sanctuary).filter(Sanctuary.name == name).count():
+            reg = Sanctuary(name)
+            db.session.add(reg)
+            db.session.commit()
+            # return render_template('success.html')
+    return render_template('index.html')
+
+# Save animal name to database
+@app.route('/animal', methods=['POST'])
+def animal():
+    name = None
+    if request.method == 'POST':
+        name = request.form['name']
+        # Check that animal does not already exist (not a great query, but works)
+        if not db.session.query(Animal).filter(Animal.name == name).count():
+            reg = Animal(name)
+            db.session.add(reg)
+            db.session.commit()
+            # return render_template('success.html')
+    return render_template('index.html')
+
+# Save event task and due date to database
+@app.route('/task', methods=['POST'])
+def task():
+    task = None
+    due = None
+    if request.method == 'POST':
+        task = request.form['task']
+        due = request.form['due']
+        # Check that task does not already exist (not a great query, but works)
+        if not db.session.query(Event).filter(Event.task == task).count():
+            reg_task = Event(task)
+            reg_due = Event(due)
+            db.session.add(reg_task)
+            db.session.add(reg_due)
+            db.session.commit()
+            # return render_template('success.html')
+    return render_template('index.html')
+
+# Edit event task or due date - I strongly feel this is wrong.
+@app.route('/edittask', methods=['PUT'])
+def edittask():
+    task = None
+    due = None
+    if request.method == 'PUT':
+        task = request.form['task']
+        due = request.form['due']
+        # Check that task already exists (not a great query, but works)
+        if db.session.query(Event).filter(Event.task == task).count():
+            reg_task = Event(task)
+            reg_due = Event(due)
+            db.session.add(reg_task)
+            db.session.add(reg_due)
+            db.session.commit()
+            # return render_template('success.html')
+    return render_template('index.html')
+
+# Delete event task and due date - no clue how to do this.
+@app.route('/deletetask', methods=['DELETE'])
+def deletetask():
+    task = None
+    due = None
+    if request.method == 'PUT':
+        task = request.form['task']
+        due = request.form['due']
+        # Check that task already exists (not a great query, but works)
+        if db.session.query(Event).filter(Event.task == task).count():
+            reg_task = Event(task)
+            reg_due = Event(due)
+            db.session.add(reg_task)
+            db.session.add(reg_due)
+            db.session.commit()
+            # return render_template('success.html')
+    return render_template('index.html')
 
 
 # API
-
 # SANCTUARIES
-
 @app.route('/sanctuary/api/sanctuaries', methods=['GET'])
 def get_sanctuaries():
     return jsonify({'sanctuaries': [make_public_sanctuary(sanctuary) for sanctuary in sanctuaries]})
