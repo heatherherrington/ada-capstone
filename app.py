@@ -175,6 +175,7 @@ def make_public_animal(animal):
 # EVENTS
 events = sanctuaries[0]['animals'][0]['events']
 
+# Add int:animal_id
 @app.route('/sanctuary/api/events', methods=['GET'])
 def get_events():
     return jsonify({'events': [make_public_event(event) for event in events]})

@@ -16,7 +16,7 @@ class Header extends React.Component {
     return (
       <div style={headerStyle}>
         <nav>
-          <h1>Sanctuary Supplement</h1>
+          <h1>Sanctuary Secretary</h1>
         </nav>
       </div>
     );

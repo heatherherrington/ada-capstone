@@ -30,6 +30,9 @@ const Animal = React.createClass({
   },
 
   render() {
+    // Undefined - why
+    console.log(this.props.params.id);
+
     return (
       <div>
         <Header />
