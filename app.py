@@ -1,7 +1,11 @@
 from flask import Flask, render_template, jsonify, abort, make_response, request, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+
+from flask.ext.heroku import Heroku
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 sanctuaries = [
