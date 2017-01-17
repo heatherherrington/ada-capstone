@@ -20,7 +20,7 @@ export default React.createClass({
   runRender: function() {
     if(this.state.events[0] != null) {
       var events = this.state.events.map((animalEvent) =>
-        <div key={animalEvent.eventId}>
+        <div key={animalEvent.id}>
           <li>{ animalEvent.task }</li>
         </div>
       );

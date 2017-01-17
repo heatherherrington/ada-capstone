@@ -24,8 +24,8 @@ export default React.createClass({
   runRender: function() {
     if(this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
-        <div key={animal.animalId}>
-          <li><Link to={`/animal/${animal.animalId}`}>{ animal.name }</Link></li>
+        <div key={animal.id}>
+          <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link></li>
         </div>
       );
       return (

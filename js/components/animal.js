@@ -13,7 +13,7 @@ const Animal = React.createClass({
     var that = this;
 
     console.log("Component mounted");
-    $.getJSON(`http://localhost:5000/sanctuary/api/animals/${this.props.params.animalId}`,
+    $.getJSON(`http://localhost:5000/sanctuary/api/animals/${this.props.params.id}`,
     function(response) {
       that.setState({ animal: response.animal })
     }

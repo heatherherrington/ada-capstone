@@ -1,38 +1,39 @@
 from flask import Flask, render_template, jsonify, abort, make_response, request, url_for
+from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 sanctuaries = [
     {
-        'sanctuaryId': 1,
+        'id': 1,
         'name': 'Hope Haven',
         'animals': [
             {
-                'animalId': 1,
+                'id': 1,
                 'name': 'Persephone',
                 'events': [
                     {
-                        'eventId': 1,
+                        'id': 1,
                         'task': 'teeth cleaning',
                         'due': '1/1/17'
                     },
                     {
-                        'eventId': 2,
+                        'id': 2,
                         'task': 'hoof trim',
                         'due': '5/23/17'
                     }
                 ]
             },
             {
-                'animalId': 2,
+                'id': 2,
                 'name': 'Carl',
                 'events': [
                     {
-                        'eventId': 1,
+                        'id': 1,
                         'task': 'teeth floating',
                         'due': '1/15/17'
                     },
                     {
-                        'eventId': 2,
+                        'id': 2,
                         'task': 'deworm',
                         'due': '4/23/17'
                     }
@@ -45,32 +46,32 @@ sanctuaries = [
         'name': u'Farm Friends',
         'animals': [
             {
-                'animalId': 1,
+                'id': 1,
                 'name': u'Louis',
                 'events': [
                     {
-                        'eventId': 1,
+                        'id': 1,
                         'task': u'teeth cleaning',
                         'due': u'5/1/17'
                     },
                     {
-                        'eventId': 2,
+                        'id': 2,
                         'task': u'deworming',
                         'due': u'4/23/17'
                     }
                 ]
             },
             {
-                'animalId': 2,
+                'id': 2,
                 'name': u'Isaac',
                 'events': [
                     {
-                        'eventId': 1,
+                        'id': 1,
                         'task': u'hoof maintenance',
                         'due': u'1/15/17'
                     },
                     {
-                        'eventId': 2,
+                        'id': 2,
                         'task': u'antibiotics',
                         'due': u'4/15/17'
                     }
@@ -86,6 +87,10 @@ sanctuaries = [
 def index():
     print('hi')
     return render_template('index.html')
+
+# DATABASE
+
+
 
 # API
 
@@ -135,7 +140,7 @@ def get_animals():
 
 @app.route('/sanctuary/api/animals/<int:animal_id>', methods=['GET'])
 def get_animal(animal_id):
-    animal = [animal for animal in animals if animal['animalId'] == animal_id]
+    animal = [animal for animal in animals if animal['id'] == animal_id]
     if len(animal) == 0:
         abort(404)
     return jsonify({'animal': animal[0]})
@@ -145,7 +150,7 @@ def create_animal():
     if not request.json or not 'name' in request.json:
         abort(400)
     animal = {
-        'animalId': animals[-1]['animalId'] + 1,
+        'id': animals[-1]['id'] + 1,
         'name': request.json['name'],
     }
     animals.append(animal)
@@ -153,7 +158,7 @@ def create_animal():
 
 @app.route('/sanctuary/api/animals/<int:animal_id>', methods=['DELETE'])
 def delete_animal(animal_id):
-    animal = [animal for animal in animals if animal['animalId'] == animal_id]
+    animal = [animal for animal in animals if animal['id'] == animal_id]
     if len(animal) == 0:
         abort(404)
     animals.remove(animal[0])
@@ -162,8 +167,8 @@ def delete_animal(animal_id):
 def make_public_animal(animal):
     new_animal = {}
     for field in animal:
-        if field == 'animalId':
-            new_animal['uri'] = url_for('get_animal', animal_id=animal['animalId'], _external=True)
+        if field == 'id':
+            new_animal['uri'] = url_for('get_animal', animal_id=animal['id'], _external=True)
         new_animal[field] = animal[field]
     return new_animal
 
@@ -176,7 +181,7 @@ def get_events():
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
 def get_event(event_id):
-    event = [event for event in events if event['eventId'] == event_id]
+    event = [event for event in events if event['id'] == event_id]
     if len(event) == 0:
         abort(404)
     return jsonify({'event': event[0]})
@@ -186,7 +191,7 @@ def create_event():
     if not request.json or not 'task' in request.json:
         abort(400)
     event = {
-        'eventId': events[-1]['eventId'] + 1,
+        'id': events[-1]['id'] + 1,
         'task': request.json['task'],
     }
     events.append(event)
@@ -194,7 +199,7 @@ def create_event():
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
-    event = [event for event in events if event['eventId'] == event_id]
+    event = [event for event in events if event['id'] == event_id]
     if len(event) == 0:
         abort(404)
     if not request.json:
@@ -209,7 +214,7 @@ def update_event(event_id):
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
-    event = [event for event in events if event['eventId'] == event_id]
+    event = [event for event in events if event['id'] == event_id]
     if len(event) == 0:
         abort(404)
     events.remove(event[0])
@@ -218,8 +223,8 @@ def delete_event(event_id):
 def make_public_event(event):
     new_event = {}
     for field in event:
-        if field == 'eventId':
-            new_event['uri'] = url_for('get_event', event_id=event['eventId'], _external=True)
+        if field == 'id':
+            new_event['uri'] = url_for('get_event', event_id=event['id'], _external=True)
         new_event[field] = event[field]
     return new_event
 
