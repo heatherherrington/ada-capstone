@@ -9,84 +9,84 @@ heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
-sanctuaries = [
-    {
-        'id': 1,
-        'name': 'Hope Haven',
-        'animals': [
-            {
-                'id': 1,
-                'name': 'Persephone',
-                'events': [
-                    {
-                        'id': 1,
-                        'task': 'teeth cleaning',
-                        'due': '1/1/17'
-                    },
-                    {
-                        'id': 2,
-                        'task': 'hoof trim',
-                        'due': '5/23/17'
-                    }
-                ]
-            },
-            {
-                'id': 2,
-                'name': 'Carl',
-                'events': [
-                    {
-                        'id': 1,
-                        'task': 'teeth floating',
-                        'due': '1/15/17'
-                    },
-                    {
-                        'id': 2,
-                        'task': 'deworm',
-                        'due': '4/23/17'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        'sanctuaryId': 2,
-        'name': u'Farm Friends',
-        'animals': [
-            {
-                'id': 1,
-                'name': u'Louis',
-                'events': [
-                    {
-                        'id': 1,
-                        'task': u'teeth cleaning',
-                        'due': u'5/1/17'
-                    },
-                    {
-                        'id': 2,
-                        'task': u'deworming',
-                        'due': u'4/23/17'
-                    }
-                ]
-            },
-            {
-                'id': 2,
-                'name': u'Isaac',
-                'events': [
-                    {
-                        'id': 1,
-                        'task': u'hoof maintenance',
-                        'due': u'1/15/17'
-                    },
-                    {
-                        'id': 2,
-                        'task': u'antibiotics',
-                        'due': u'4/15/17'
-                    }
-                ]
-            }
-        ]
-    }
-]
+# sanctuaries = [
+#     {
+#         'id': 1,
+#         'name': 'Hope Haven',
+#         'animals': [
+#             {
+#                 'id': 1,
+#                 'name': 'Finn',
+#                 'events': [
+#                     {
+#                         'id': 1,
+#                         'task': 'teeth cleaning',
+#                         'due': '1/1/17'
+#                     },
+#                     {
+#                         'id': 2,
+#                         'task': 'hoof trim',
+#                         'due': '5/23/17'
+#                     }
+#                 ]
+#             },
+#             {
+#                 'id': 2,
+#                 'name': 'Carl',
+#                 'events': [
+#                     {
+#                         'id': 3,
+#                         'task': 'teeth floating',
+#                         'due': '1/15/17'
+#                     },
+#                     {
+#                         'id': 4,
+#                         'task': 'deworm',
+#                         'due': '4/23/17'
+#                     }
+#                 ]
+#             }
+#         ]
+#     },
+#     {
+#         'sanctuaryId': 2,
+#         'name': u'Farm Friends',
+#         'animals': [
+#             {
+#                 'id': 3,
+#                 'name': u'Louis',
+#                 'events': [
+#                     {
+#                         'id': 5,
+#                         'task': u'teeth cleaning',
+#                         'due': u'5/1/17'
+#                     },
+#                     {
+#                         'id': 6,
+#                         'task': u'deworming',
+#                         'due': u'4/23/17'
+#                     }
+#                 ]
+#             },
+#             {
+#                 'id': 4,
+#                 'name': u'Isaac',
+#                 'events': [
+#                     {
+#                         'id': 7,
+#                         'task': u'hoof maintenance',
+#                         'due': u'1/15/17'
+#                     },
+#                     {
+#                         'id': 8,
+#                         'task': u'antibiotics',
+#                         'due': u'4/15/17'
+#                     }
+#                 ]
+#             }
+#         ]
+#     }
+# ]
 
 # NON-API ROUTES
 @app.route('/sanctuary')
@@ -96,7 +96,6 @@ def index():
 
 
 # DATABASE
-# Create our database models
 # SANCTUARY
 class Sanctuary(db.Model):
     __tablename__ = "sanctuaries"
@@ -247,7 +246,9 @@ def deletetask():
 # SANCTUARIES
 @app.route('/sanctuary/api/sanctuaries', methods=['GET'])
 def get_sanctuaries():
-    return jsonify({'sanctuaries': [make_public_sanctuary(sanctuary) for sanctuary in sanctuaries]})
+    call_sanctuaries = Sanctuary.query.all()
+
+    return jsonify({'sanctuaries': [sanctuary.json_dump() for sanctuary in call_sanctuaries]})
 
 @app.route('/sanctuary/api/sanctuaries/<int:id>', methods=['GET'])
 def get_sanctuary(id):
@@ -262,10 +263,10 @@ def create_sanctuary():
     if not request.json or not 'name' in request.json:
         abort(400)
     sanctuary = {
-        'id': sanctuaries[-1]['id'] + 1,
+        'id': db[-1]['id'] + 1,
         'name': request.json['name'],
     }
-    sanctuaries.append(sanctuary)
+    db.append(sanctuary)
     return jsonify({'sanctuary': sanctuary}), 201
 
 @app.errorhandler(404)
@@ -282,11 +283,11 @@ def make_public_sanctuary(sanctuary):
 
 
 # ANIMALS
-animals = sanctuaries[0]['animals']
-
 @app.route('/sanctuary/api/animals', methods=['GET'])
 def get_animals():
-    return jsonify({'animals': [make_public_animal(animal) for animal in animals]})
+    call_animals = Animal.query.all()
+
+    return jsonify({'animals': [animal.json_dump() for animal in call_animals]})
 
 @app.route('/sanctuary/api/animals/<int:id>', methods=['GET'])
 def get_animal(id):
@@ -294,7 +295,7 @@ def get_animal(id):
     # animal = [animal for animal in animals if animal['id'] == animal_id]
     # if len(animal) == 0:
     #     abort(404)
-    return jsonify(sanctuaries = [call_animal.json_dump()])
+    return jsonify(animals = [call_animal.json_dump()])
 
 @app.route('/sanctuary/api/animals', methods=['POST'])
 def create_animal():
@@ -319,17 +320,17 @@ def make_public_animal(animal):
     new_animal = {}
     for field in animal:
         if field == 'id':
-            new_animal['uri'] = url_for('get_animal', animal_id=animal['id'], _external=True)
+            new_animal['uri'] = url_for('get_animal', id=animal['id'], _external=True)
         new_animal[field] = animal[field]
     return new_animal
 
 # EVENTS
-events = sanctuaries[0]['animals'][0]['events']
-
 # Add int:animal_id
 @app.route('/sanctuary/api/events', methods=['GET'])
 def get_events():
-    return jsonify({'events': [make_public_event(event) for event in events]})
+    call_events = Event.query.all()
+
+    return jsonify({'events': [event.json_dump() for event in call_events]})
 
 @app.route('/sanctuary/api/events/<int:id>', methods=['GET'])
 def get_event(id):
@@ -337,7 +338,7 @@ def get_event(id):
     # event = [event for event in events if event['id'] == event_id]
     # if len(event) == 0:
     #     abort(404)
-    return jsonify(sanctuaries = [call_event.json_dump()])
+    return jsonify(events = [call_event.json_dump()])
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():

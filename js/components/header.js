@@ -5,8 +5,8 @@ class Header extends React.Component {
     var headerStyle = {
       padding: 30,
       // margin: 10,
-      backgroundColor: "lightgrey",
-      color: "black",
+      backgroundColor: "magenta",
+      color: "white",
       display: "block",
       // fontFamily: "monospace",
       fontSize: "32",
