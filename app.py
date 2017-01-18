@@ -6,6 +6,7 @@ from flask.ext.heroku import Heroku
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
 sanctuaries = [
@@ -91,7 +92,6 @@ sanctuaries = [
 @app.route('/sanctuary')
 @app.route('/')
 def index():
-    print('hi')
     return render_template('index.html')
 
 
@@ -102,44 +102,41 @@ class Sanctuary(db.Model):
     __tablename__ = "sanctuaries"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
+    animals = db.relationship('Animal', backref='sanctuary')
 
-    def __init__(self, name):
-        self.name = name
+    def json_dump(self):
+        return dict(name=self.name)
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Sanctuary name %r>' % self.name
 
 # ANIMAL
 class Animal(db.Model):
     __tablename__ = "animals"
     id = db.Column(db.Integer, primary_key=True)
-    # PROBABLY NEED TO CHANGE PRIMARY_KEY
-    sanctuaryId = db.Column(db.Integer, primary_key=True)
+    sanctuary_id = db.Column(db.Integer, db.ForeignKey('sanctuaries.id'))
+    events = db.relationship('Event', backref='animal')
     name = db.Column(db.String(120), unique=True)
 
-    def __init__(self, name):
-        self.name = name
+    def json_dump(self):
+        return dict(name=self.name)
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Animal name %r>' % self.name
 
 # EVENT
 class Event(db.Model):
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True)
-    # PROBABLY NEED TO CHANGE PRIMARY_KEY
-    animalId = db.Column(db.Integer, primary_key=True)
+    animal_id = db.Column(db.Integer, db.ForeignKey('animals.id'))
     task = db.Column(db.String(120), unique=True)
     due = db.Column(db.String(120), unique=True)
 
-    def __init__(self, task):
-        self.task = task
+    def json_dump(self):
+        return dict(task=self.task, due=self.due)
 
     def __repr__(self):
         return '<Task %r>' % self.task
-
-    def __init__(self, due):
-        self.due = due
 
     def __repr__(self):
         return '<Due date %r>' % self.due
@@ -234,19 +231,20 @@ def deletetask():
 def get_sanctuaries():
     return jsonify({'sanctuaries': [make_public_sanctuary(sanctuary) for sanctuary in sanctuaries]})
 
-@app.route('/sanctuary/api/sanctuaries/<int:sanctuary_id>', methods=['GET'])
-def get_sanctuary(sanctuary_id):
-    sanctuary = [sanctuary for sanctuary in sanctuaries if sanctuary['sanctuaryId'] == sanctuary_id]
-    if len(sanctuary) == 0:
-        abort(404)
-    return jsonify({'sanctuary': sanctuary[0]})
+@app.route('/sanctuary/api/sanctuaries/<int:id>', methods=['GET'])
+def get_sanctuary(id):
+    call_sanctuary = Sanctuary.query.get_or_404(id)
+    # sanctuary = [sanctuary for sanctuary in sanctuaries if sanctuary['sanctuaryId'] == sanctuary_id]
+    # if len(sanctuary) == 0:
+    #     abort(404)
+    return jsonify(data = [call_sanctuary.json_dump()])
 
 @app.route('/sanctuary/api/sanctuaries', methods=['POST'])
 def create_sanctuary():
     if not request.json or not 'name' in request.json:
         abort(400)
     sanctuary = {
-        'sanctuaryId': sanctuaries[-1]['sanctuaryId'] + 1,
+        'id': sanctuaries[-1]['id'] + 1,
         'name': request.json['name'],
     }
     sanctuaries.append(sanctuary)
@@ -259,8 +257,8 @@ def not_found(error):
 def make_public_sanctuary(sanctuary):
     new_sanctuary = {}
     for field in sanctuary:
-        if field == 'sanctuaryId':
-            new_sanctuary['uri'] = url_for('get_sanctuary', sanctuary_id=sanctuary['sanctuaryId'], _external=True)
+        if field == 'id':
+            new_sanctuary['uri'] = url_for('get_sanctuary', id=sanctuary['id'], _external=True)
         new_sanctuary[field] = sanctuary[field]
     return new_sanctuary
 
@@ -272,12 +270,13 @@ animals = sanctuaries[0]['animals']
 def get_animals():
     return jsonify({'animals': [make_public_animal(animal) for animal in animals]})
 
-@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['GET'])
-def get_animal(animal_id):
-    animal = [animal for animal in animals if animal['id'] == animal_id]
-    if len(animal) == 0:
-        abort(404)
-    return jsonify({'animal': animal[0]})
+@app.route('/sanctuary/api/animals/<int:id>', methods=['GET'])
+def get_animal(id):
+    call_animal = Animal.query.get_or_404(id)
+    # animal = [animal for animal in animals if animal['id'] == animal_id]
+    # if len(animal) == 0:
+    #     abort(404)
+    return jsonify(data = [call_animal.json_dump()])
 
 @app.route('/sanctuary/api/animals', methods=['POST'])
 def create_animal():
@@ -290,7 +289,7 @@ def create_animal():
     animals.append(animal)
     return jsonify({'animal': animal}), 201
 
-@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['DELETE'])
+@app.route('/sanctuary/api/animals/<int:id>', methods=['DELETE'])
 def delete_animal(animal_id):
     animal = [animal for animal in animals if animal['id'] == animal_id]
     if len(animal) == 0:
@@ -314,12 +313,13 @@ events = sanctuaries[0]['animals'][0]['events']
 def get_events():
     return jsonify({'events': [make_public_event(event) for event in events]})
 
-@app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
-def get_event(event_id):
-    event = [event for event in events if event['id'] == event_id]
-    if len(event) == 0:
-        abort(404)
-    return jsonify({'event': event[0]})
+@app.route('/sanctuary/api/events/<int:id>', methods=['GET'])
+def get_event(id):
+    call_event = Event.query.get_or_404(id)
+    # event = [event for event in events if event['id'] == event_id]
+    # if len(event) == 0:
+    #     abort(404)
+    return jsonify(data = [call_event.json_dump()])
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():
@@ -332,7 +332,7 @@ def create_event():
     events.append(event)
     return jsonify({'event': event}), 201
 
-@app.route('/sanctuary/api/events/<int:event_id>', methods=['PUT'])
+@app.route('/sanctuary/api/events/<int:id>', methods=['PUT'])
 def update_event(event_id):
     event = [event for event in events if event['id'] == event_id]
     if len(event) == 0:
@@ -347,7 +347,7 @@ def update_event(event_id):
     event[0]['due'] = request.json.get('due', event[0]['due'])
     return jsonify({'event': event[0]})
 
-@app.route('/sanctuary/api/events/<int:event_id>', methods=['DELETE'])
+@app.route('/sanctuary/api/events/<int:id>', methods=['DELETE'])
 def delete_event(event_id):
     event = [event for event in events if event['id'] == event_id]
     if len(event) == 0:
