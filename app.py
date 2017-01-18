@@ -253,9 +253,6 @@ def get_sanctuaries():
 @app.route('/sanctuary/api/sanctuaries/<int:id>', methods=['GET'])
 def get_sanctuary(id):
     call_sanctuary = Sanctuary.query.get_or_404(id)
-    # sanctuary = [sanctuary for sanctuary in sanctuaries if sanctuary['sanctuaryId'] == sanctuary_id]
-    # if len(sanctuary) == 0:
-    #     abort(404)
     return jsonify(sanctuaries = [call_sanctuary.json_dump()])
 
 @app.route('/sanctuary/api/sanctuaries', methods=['POST'])
@@ -292,9 +289,6 @@ def get_animals():
 @app.route('/sanctuary/api/animals/<int:id>', methods=['GET'])
 def get_animal(id):
     call_animal = Animal.query.get_or_404(id)
-    # animal = [animal for animal in animals if animal['id'] == animal_id]
-    # if len(animal) == 0:
-    #     abort(404)
     return jsonify(animals = [call_animal.json_dump()])
 
 @app.route('/sanctuary/api/animals', methods=['POST'])
@@ -335,9 +329,6 @@ def get_events():
 @app.route('/sanctuary/api/events/<int:id>', methods=['GET'])
 def get_event(id):
     call_event = Event.query.get_or_404(id)
-    # event = [event for event in events if event['id'] == event_id]
-    # if len(event) == 0:
-    #     abort(404)
     return jsonify(events = [call_event.json_dump()])
 
 @app.route('/sanctuary/api/events', methods=['POST'])
