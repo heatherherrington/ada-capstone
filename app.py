@@ -105,7 +105,16 @@ class Sanctuary(db.Model):
     animals = db.relationship('Animal', backref='sanctuary')
 
     def json_dump(self):
-        return dict(name=self.name)
+        animals = []
+        for animal in self.animals:
+            # Add animal to the list
+            animals.append(animal.json_dump())
+
+        return {
+            "id": self.id,
+            "name": self.name,
+            "animals": animals
+        }
 
     def __repr__(self):
         return '<Sanctuary name %r>' % self.name
@@ -119,7 +128,16 @@ class Animal(db.Model):
     name = db.Column(db.String(120), unique=True)
 
     def json_dump(self):
-        return dict(name=self.name)
+        events = []
+        for event in self.events:
+            # Add animal to the list
+            events.append(event.json_dump())
+
+        return {
+            "id": self.id,
+            "name": self.name,
+            "events": events
+        }
 
     def __repr__(self):
         return '<Animal name %r>' % self.name
@@ -133,7 +151,7 @@ class Event(db.Model):
     due = db.Column(db.String(120), unique=True)
 
     def json_dump(self):
-        return dict(task=self.task, due=self.due)
+        return dict(id=self.id, task=self.task, due=self.due)
 
     def __repr__(self):
         return '<Task %r>' % self.task
@@ -237,7 +255,7 @@ def get_sanctuary(id):
     # sanctuary = [sanctuary for sanctuary in sanctuaries if sanctuary['sanctuaryId'] == sanctuary_id]
     # if len(sanctuary) == 0:
     #     abort(404)
-    return jsonify(data = [call_sanctuary.json_dump()])
+    return jsonify(sanctuaries = [call_sanctuary.json_dump()])
 
 @app.route('/sanctuary/api/sanctuaries', methods=['POST'])
 def create_sanctuary():
@@ -276,7 +294,7 @@ def get_animal(id):
     # animal = [animal for animal in animals if animal['id'] == animal_id]
     # if len(animal) == 0:
     #     abort(404)
-    return jsonify(data = [call_animal.json_dump()])
+    return jsonify(sanctuaries = [call_animal.json_dump()])
 
 @app.route('/sanctuary/api/animals', methods=['POST'])
 def create_animal():
@@ -319,7 +337,7 @@ def get_event(id):
     # event = [event for event in events if event['id'] == event_id]
     # if len(event) == 0:
     #     abort(404)
-    return jsonify(data = [call_event.json_dump()])
+    return jsonify(sanctuaries = [call_event.json_dump()])
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():
