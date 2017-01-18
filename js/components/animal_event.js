@@ -20,9 +20,13 @@ export default React.createClass({
   runRender: function() {
     if(this.state.events[0] != null) {
       var events = this.state.events.map((animalEvent) =>
-        <div key={animalEvent.id}>
-          <li>{ animalEvent.task }</li>
-        </div>
+        // {
+        //   if(animalEvent.animal_id == this.params.animal.id) {
+            <div key={animalEvent.id}>
+              <li>{ animalEvent.task }</li>
+            </div>
+        //   }
+        // }
       );
       return (
         <ul>{events}</ul>

@@ -7,6 +7,8 @@ import Main from './components/main';
 import $ from 'jquery';
 
 export default React.createClass({
+  // mixins: [ParseReact.Mixin],
+
   getInitialState: function() {
     return { animals: [] }
   },
