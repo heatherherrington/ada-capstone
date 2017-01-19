@@ -9,85 +9,6 @@ heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
-# sanctuaries = [
-#     {
-#         'id': 1,
-#         'name': 'Hope Haven',
-#         'animals': [
-#             {
-#                 'id': 1,
-#                 'name': 'Finn',
-#                 'events': [
-#                     {
-#                         'id': 1,
-#                         'task': 'teeth cleaning',
-#                         'due': '1/1/17'
-#                     },
-#                     {
-#                         'id': 2,
-#                         'task': 'hoof trim',
-#                         'due': '5/23/17'
-#                     }
-#                 ]
-#             },
-#             {
-#                 'id': 2,
-#                 'name': 'Carl',
-#                 'events': [
-#                     {
-#                         'id': 3,
-#                         'task': 'teeth floating',
-#                         'due': '1/15/17'
-#                     },
-#                     {
-#                         'id': 4,
-#                         'task': 'deworm',
-#                         'due': '4/23/17'
-#                     }
-#                 ]
-#             }
-#         ]
-#     },
-#     {
-#         'sanctuaryId': 2,
-#         'name': u'Farm Friends',
-#         'animals': [
-#             {
-#                 'id': 3,
-#                 'name': u'Louis',
-#                 'events': [
-#                     {
-#                         'id': 5,
-#                         'task': u'teeth cleaning',
-#                         'due': u'5/1/17'
-#                     },
-#                     {
-#                         'id': 6,
-#                         'task': u'deworming',
-#                         'due': u'4/23/17'
-#                     }
-#                 ]
-#             },
-#             {
-#                 'id': 4,
-#                 'name': u'Isaac',
-#                 'events': [
-#                     {
-#                         'id': 7,
-#                         'task': u'hoof maintenance',
-#                         'due': u'1/15/17'
-#                     },
-#                     {
-#                         'id': 8,
-#                         'task': u'antibiotics',
-#                         'due': u'4/15/17'
-#                     }
-#                 ]
-#             }
-#         ]
-#     }
-# ]
-
 # NON-API ROUTES
 @app.route('/sanctuary')
 @app.route('/')
@@ -125,6 +46,11 @@ class Animal(db.Model):
     sanctuary_id = db.Column(db.Integer, db.ForeignKey('sanctuaries.id'))
     events = db.relationship('Event', backref='animal')
     name = db.Column(db.String(120), unique=True)
+
+    # Constructor function needed to initialize animal - will also need for events
+    def __init__(self, name=None):
+        if name is not None:
+            self.name = name
 
     def json_dump(self):
         events = []
@@ -176,8 +102,12 @@ def sanc():
 # Save animal name to database
 @app.route('/animal', methods=['POST'])
 def animal():
+    # print("HI")
+    # print(request.method)
+    # print(request.method == 'POST')
     name = None
     if request.method == 'POST':
+        # print(request.form)
         name = request.form['name']
         # Check that animal does not already exist (not a great query, but works)
         if not db.session.query(Animal).filter(Animal.name == name).count():
