@@ -43,7 +43,7 @@ export default React.createClass({
     return (
       <div>
         <Header />
-        <h1>Sanctuary</h1>
+        <h1>Hope Haven Farm Sanctuary</h1>
         { this.runRender() }
         <AnimalAdd />
         <Footer />

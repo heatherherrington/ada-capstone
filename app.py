@@ -296,7 +296,7 @@ def create_animal():
     if not request.json or not 'name' in request.json:
         abort(400)
     animal = {
-        'id': animals[-1]['id'] + 1,
+        # 'id': animals[-1]['id'] + 1,
         'name': request.json['name'],
     }
     animals.append(animal)

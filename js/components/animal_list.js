@@ -22,8 +22,8 @@ var AnimalList = React.createClass({
     // var animals = this.state.animals.map((animal) => {
       return (
         <div>
-        // key={ animals }>
-        //   <h3>{ animal.name }</h3>
+          // key={ animals }>
+          //   <h3>{ animal.name }</h3>
         </div>
       )
     // });

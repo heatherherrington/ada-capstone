@@ -9,7 +9,7 @@ export default React.createClass({
     $.ajax({
       url: '/animal',
       type: 'POST',
-      data: { item: { name: name } },
+      data: { item: { "name": name } },
       success: (response) => {
         console.log('it worked!', response);
       }
