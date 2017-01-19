@@ -30,25 +30,6 @@ const Animal = React.createClass({
     }
   },
 
-  addTask: function(e) {
-    var taskArray = this.state.tasks;
-
-    taskArray.push(
-      {
-        text: this._inputElement.value,
-        key: Date.now()
-      }
-    );
-
-    this.setState({
-      tasks: taskArray
-    });
-
-    this._inputElement.value = "";
-
-    e.preventDefault();
-  },
-
   render() {
     console.log(this.props.params.id);
 

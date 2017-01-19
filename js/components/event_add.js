@@ -7,8 +7,7 @@ export default React.createClass({
     return (
       <div>
         <form onSubmit={this.addTask}>
-          <input ref={(a) => this._inputElement = a}
-            placeholder="add task name">
+          <input placeholder="add task name">
           </input>
           <button type="submit">Add Task</button>
         </form>
