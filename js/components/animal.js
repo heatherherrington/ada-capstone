@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import Footer from './footer';
 import AnimalEvent from './animal_event';
+import EventAdd from './event_add';
 import $ from 'jquery';
 
 const Animal = React.createClass({
@@ -29,6 +30,25 @@ const Animal = React.createClass({
     }
   },
 
+  addTask: function(e) {
+    var taskArray = this.state.tasks;
+
+    taskArray.push(
+      {
+        text: this._inputElement.value,
+        key: Date.now()
+      }
+    );
+
+    this.setState({
+      tasks: taskArray
+    });
+
+    this._inputElement.value = "";
+
+    e.preventDefault();
+  },
+
   render() {
     console.log(this.props.params.id);
 
@@ -37,6 +57,7 @@ const Animal = React.createClass({
         <Header />
         { this.runRender() }
         <AnimalEvent />
+        <EventAdd />
         <Footer />
       </div>
     )

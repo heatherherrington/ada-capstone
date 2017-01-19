@@ -4,6 +4,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { Link } from 'react-router';
 import Main from './components/main';
+import AnimalAdd from './components/animal_add'
 import $ from 'jquery';
 
 export default React.createClass({
@@ -44,6 +45,7 @@ export default React.createClass({
         <Header />
         <h1>Sanctuary</h1>
         { this.runRender() }
+        <AnimalAdd />
         <Footer />
       </div>
     )
