@@ -7,7 +7,7 @@ import Sanctuary from './sanctuary'
 
 render((
   <Router history={browserHistory}>
-    <Route path="/" component={App}/>
+    <Route path="/" component={App} />
     {/* add the routes here */}
     <Route path="/animal/:id" component={Animal}/>
     <Route path="/sanctuary" component={Sanctuary}/>

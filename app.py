@@ -164,7 +164,7 @@ def edittask():
 def deletetask():
     task = None
     due = None
-    if request.method == 'PUT':
+    if request.method == 'DELETE':
         task = request.form['task']
         due = request.form['due']
         # Check that task already exists (not a great query, but works)

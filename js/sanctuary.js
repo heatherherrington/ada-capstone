@@ -22,6 +22,20 @@ export default React.createClass({
     }
   )},
 
+  // componentWillMount() {
+  //   const id = setInterval(this.fetchData, 5000);
+  //   this.setState({intervalId: id});
+  // },
+  //
+  // fetchData() {
+  //   var that = this;
+  //
+  //   $.getJSON('http://localhost:5000/sanctuary/api/animals',
+  //   function(response) {
+  //     that.setState({ animals: response.animals })
+  //   }
+  // )},
+
   runRender: function() {
     if(this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
