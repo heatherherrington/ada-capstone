@@ -37,7 +37,7 @@ const Animal = React.createClass({
         <Header />
         <h2>{this.state.animal.name}</h2>
         <AnimalEvent animalId={this.props.params.id} />
-        <EventAdd />
+        <EventAdd animalId={this.props.params.id}/>
         <Footer />
       </div>
     )

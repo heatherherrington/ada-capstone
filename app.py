@@ -72,8 +72,16 @@ class Event(db.Model):
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True)
     animal_id = db.Column(db.Integer, db.ForeignKey('animals.id'))
-    task = db.Column(db.String(120), unique=True)
-    due = db.Column(db.String(120), unique=True)
+    task = db.Column(db.String(120), unique=False)
+    due = db.Column(db.String(120), unique=False)
+
+    def __init__(self, task=None, due=None, animal_id=None):
+        if task is not None:
+            self.task = task
+        if due is not None:
+            self.due = due
+        if animal_id is not None:
+            self.animal_id = animal_id
 
     def json_dump(self):
         return dict(id=self.id, task=self.task, due=self.due, animal_id=self.animal_id)
@@ -125,13 +133,10 @@ def task():
     if request.method == 'POST':
         task = request.form['task']
         due = request.form['due']
-        # Check that task does not already exist (not a great query, but works)
-        if not db.session.query(Event).filter(Event.task == task).count():
-            reg_task = Event(task)
-            reg_due = Event(due)
-            db.session.add(reg_task)
-            db.session.add(reg_due)
-            db.session.commit()
+        animal_id = request.form['animal_id']
+        reg = Event(task, due, animal_id)
+        db.session.add(reg)
+        db.session.commit()
             # return render_template('success.html')
     return render_template('index.html')
 
