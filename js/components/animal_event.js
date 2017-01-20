@@ -9,7 +9,7 @@ const AnimalEvent = React.createClass({
   componentDidMount() {
     var that = this;
 
-    $.getJSON(`http://localhost:5000/sanctuary/api/events`,
+    $.getJSON(`http://sanctuarysecretary.com/sanctuary/api/events`,
     function(response) {
       that.setState({ events: response.events })
     }
