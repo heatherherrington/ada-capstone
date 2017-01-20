@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
 # NON-API ROUTES
+@app.route('/animal/:id')
 @app.route('/sanctuary')
 @app.route('/')
 def index():
