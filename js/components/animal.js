@@ -7,37 +7,36 @@ import $ from 'jquery';
 
 const Animal = React.createClass({
   getInitialState: function() {
-    return { animal: null }
+    return { animal: {} }
   },
 
   componentDidMount() {
     var that = this;
 
-    console.log("Component mounted");
     $.getJSON(`http://localhost:5000/sanctuary/api/animals/${this.props.params.id}`,
     function(response) {
-      that.setState({ animal: response.animal })
+      that.setState({ animal: response.animals[0] })
     }
   )},
 
-  runRender: function() {
-    if(this.state.animal != null) {
-      return (
-        <div>
-          <h2>{this.state.animal.name}</h2>
-        </div>
-      )
-    }
-  },
+  // runRender: function() {
+  //   console.log("Getting to animal runRender");
+  //   console.log("Animal ID", this.props.params.id);
+  //   console.log("animal name", this.props.params.name);
+  //   if(this.props.params.id != null) {
+  //     var animalName = this.props.params.name;
+  //     return (
+  //         <h2>{animalName}</h2>
+  //     )
+  //   }
+  // },
 
   render() {
-    console.log(this.props.params.id);
-
     return (
       <div>
         <Header />
-        { this.runRender() }
-        <AnimalEvent />
+        <h2>{this.state.animal.name}</h2>
+        <AnimalEvent animalId={this.props.params.id} />
         <EventAdd />
         <Footer />
       </div>

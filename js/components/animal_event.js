@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 
-export default React.createClass({
+const AnimalEvent = React.createClass({
   getInitialState: function() {
     return { events: [] }
   },
@@ -10,7 +9,6 @@ export default React.createClass({
   componentDidMount() {
     var that = this;
 
-    console.log("Component mounted");
     $.getJSON(`http://localhost:5000/sanctuary/api/events`,
     function(response) {
       that.setState({ events: response.events })
@@ -19,24 +17,24 @@ export default React.createClass({
 
   runRender: function() {
     if(this.state.events[0] != null) {
-      var events = this.state.events.map((animalEvent) =>
-        // {
-        //   if(animalEvent.animal_id == this.params.animal.id) {
-            <div key={animalEvent.id}>
-              <li>{ animalEvent.task }</li>
-            </div>
-        //   }
-        // }
+      var animalEvents = this.state.events.map((animalEvent) =>
+        {
+          if(animalEvent.animal_id == this.props.animalId) {
+            return (
+              <div key={animalEvent.id}>
+                <li>{ animalEvent.task }, Due date: { animalEvent.due }</li>
+              </div>
+            )
+          }
+        }
       );
       return (
-        <ul>{events}</ul>
+        <ul>{animalEvents}</ul>
       )
     }
   },
 
   render() {
-    console.log("state.events", this.state.events);
-
     return (
       <div>
         { this.runRender() }
@@ -44,3 +42,5 @@ export default React.createClass({
     )
   }
 })
+
+export default AnimalEvent;

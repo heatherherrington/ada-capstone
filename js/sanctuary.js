@@ -8,7 +8,6 @@ import AnimalAdd from './components/animal_add'
 import $ from 'jquery';
 
 export default React.createClass({
-  // mixins: [ParseReact.Mixin],
 
   getInitialState: function() {
     return { animals: [] }
@@ -17,7 +16,6 @@ export default React.createClass({
   componentDidMount() {
     var that = this;
 
-    console.log("Component mounted");
     $.getJSON('http://localhost:5000/sanctuary/api/animals',
     function(response) {
       that.setState({ animals: response.animals })

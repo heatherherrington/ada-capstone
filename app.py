@@ -76,7 +76,7 @@ class Event(db.Model):
     due = db.Column(db.String(120), unique=True)
 
     def json_dump(self):
-        return dict(id=self.id, task=self.task, due=self.due)
+        return dict(id=self.id, task=self.task, due=self.due, animal_id=self.animal_id)
 
     def __repr__(self):
         return '<Task %r>' % self.task

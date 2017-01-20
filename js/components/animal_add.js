@@ -9,9 +9,6 @@ export default React.createClass({
       url: '/animal',
       type: 'POST',
       data: {name: name},
-      success: (response) => {
-        console.log('it worked!', response);
-      }
     });
   },
 
