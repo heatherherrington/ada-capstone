@@ -11,7 +11,7 @@ var AnimalList = React.createClass({
     var that = this;
 
     console.log("Component mounted");
-    $.getJSON('http://sanctuarysecretary.com/sanctuary/api/animals',
+    $.getJSON('http://www.sanctuarysecretary.com/sanctuary/api/animals',
     function(response) { that.setState({ animals: response }) }
   )},
 

@@ -16,7 +16,7 @@ export default React.createClass({
   componentDidMount() {
     var that = this;
 
-    $.getJSON('http://sanctuarysecretary.com/sanctuary/api/animals',
+    $.getJSON('http://www.sanctuarysecretary.com/sanctuary/api/animals',
     function(response) {
       that.setState({ animals: response.animals })
     }
