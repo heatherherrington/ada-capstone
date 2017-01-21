@@ -1,13 +1,19 @@
-from flask import Flask, render_template, jsonify, abort, make_response, request, url_for
+from flask import Flask, redirect, render_template, session, jsonify, abort, make_response, request, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask_oauth import OAuth
 
 from flask.ext.heroku import Heroku
+
+GOOGLE_CLIENT_ID = GOOGLE_LOGIN_CLIENT_ID
+GOOGLE_CLIENT_SECRET = GOOGLE_LOGIN_CLIENT_SECRET
+REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
+
 
 # NON-API ROUTES
 @app.route('/animal/:id')
