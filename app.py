@@ -4,9 +4,9 @@ from flask_oauth import OAuth
 
 from flask.ext.heroku import Heroku
 
-GOOGLE_CLIENT_ID = GOOGLE_LOGIN_CLIENT_ID
-GOOGLE_CLIENT_SECRET = GOOGLE_LOGIN_CLIENT_SECRET
-REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
+# GOOGLE_CLIENT_ID = GOOGLE_LOGIN_CLIENT_ID
+# GOOGLE_CLIENT_SECRET = GOOGLE_LOGIN_CLIENT_SECRET
+# REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
