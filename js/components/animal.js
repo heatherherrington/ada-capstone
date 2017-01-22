@@ -10,38 +10,38 @@ const Animal = React.createClass({
     return { animal: {} }
   },
 
+  refreshFromServer: function () {
+    console.log("Animal.refreshFromServer() called.");
+    let that = this;
+    $.getJSON(`/sanctuary/api/animals/${this.props.params.id}`,
+      function (response) {
+        that.setState({animal: response.animals[0]})
+      }
+    );
+  },
+
   componentDidMount() {
-    var that = this;
-
-    $.getJSON(`http://localhost:5000/sanctuary/api/animals/${this.props.params.id}`,
-    function(response) {
-      that.setState({ animal: response.animals[0] })
-    }
-  )},
-
-  // runRender: function() {
-  //   console.log("Getting to animal runRender");
-  //   console.log("Animal ID", this.props.params.id);
-  //   console.log("animal name", this.props.params.name);
-  //   if(this.props.params.id != null) {
-  //     var animalName = this.props.params.name;
-  //     return (
-  //         <h2>{animalName}</h2>
-  //     )
-  //   }
-  // },
+    console.log("Animal.componentDidMount() called.");
+    this.refreshFromServer();
+  },
 
   render() {
+    let self = this;
+    let onAdd = function () {
+      console.log("Animal onAdd callback called.");
+      self.componentDidMount();
+      self.refs.eventList.componentDidMount();
+    };
     return (
       <div>
         <Header />
         <h2>{this.state.animal.name}</h2>
-        <AnimalEvent animalId={this.props.params.id} />
-        <EventAdd animalId={this.props.params.id}/>
+        <AnimalEvent ref="eventList" animalId={this.props.params.id}/>
+        <EventAdd ref="eventAdd" animalId={this.props.params.id} onAdd={onAdd}/>
         <Footer />
       </div>
     )
   }
-})
+});
 
 export default Animal;
