@@ -9,7 +9,7 @@ from flask.ext.heroku import Heroku
 # REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
