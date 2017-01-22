@@ -9,7 +9,7 @@ from flask.ext.heroku import Heroku
 # REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
@@ -32,19 +32,20 @@ class Sanctuary(db.Model):
     animals = db.relationship('Animal', backref='sanctuary')
 
     def json_dump(self):
-        animals = []
-        for animal in self.animals:
-            # Add animal to the list
-            animals.append(animal.json_dump())
-
         return {
             "id": self.id,
             "name": self.name,
-            "animals": animals
+            "animals": [a.json_dump() for a in self.animals]
         }
 
-    def __repr__(self):
-        return '<Sanctuary name %r>' % self.name
+    def __str__(self):
+        rv = super(Sanctuary, self).__str__()
+        info = " id=%s name=%r num_animals=%d" % (self.id, self.name, len(self.animals))
+        rv = rv[:-1] + info + rv[-1]
+        return rv
+
+        # def __repr__(self):
+        #     return '<Sanctuary name %r>' % self.name
 
 # ANIMAL
 class Animal(db.Model):

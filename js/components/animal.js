@@ -13,7 +13,7 @@ const Animal = React.createClass({
   componentDidMount() {
     var that = this;
 
-    $.getJSON(`http://www.sanctuarysecretary.com/sanctuary/api/animals/${this.props.params.id}`,
+    $.getJSON(`http://localhost;5000/sanctuary/api/animals/${this.props.params.id}`,
     function(response) {
       that.setState({ animal: response.animals[0] })
     }
