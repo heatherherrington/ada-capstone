@@ -1,12 +1,7 @@
 from flask import Flask, redirect, render_template, session, jsonify, abort, make_response, request, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask_oauth import OAuth
 
 from flask.ext.heroku import Heroku
-
-# GOOGLE_CLIENT_ID = GOOGLE_LOGIN_CLIENT_ID
-# GOOGLE_CLIENT_SECRET = GOOGLE_LOGIN_CLIENT_SECRET
-# REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
@@ -16,10 +11,10 @@ db = SQLAlchemy(app)
 
 
 # NON-API ROUTES
-@app.route('/animal/:id')
+@app.route('/animal/<int:animal_id>')
 @app.route('/sanctuary')
 @app.route('/')
-def index():
+def index(animal_id=None):
     return render_template('index.html')
 
 
@@ -262,51 +257,61 @@ def make_public_animal(animal):
     return new_animal
 
 # EVENTS
-# Add int:animal_id
 @app.route('/sanctuary/api/events', methods=['GET'])
 def get_events():
     call_events = Event.query.all()
-
     return jsonify({'events': [event.json_dump() for event in call_events]})
 
-@app.route('/sanctuary/api/events/<int:id>', methods=['GET'])
-def get_event(id):
-    call_event = Event.query.get_or_404(id)
-    return jsonify(events = [call_event.json_dump()])
+@app.route('/sanctuary/api/events/animal/<int:animal_id>', methods=['GET'])
+def get_events_for_animal(animal_id):
+    call_events = Event.query.filter_by(animal_id=animal_id).all()
+    return jsonify({'events': [event.json_dump() for event in call_events]})
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
+def get_event(event_id):
+    call_event = Event.query.get_or_404(event_id)
+    return jsonify({'events': [call_event.json_dump()]})
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():
-    if not request.json or not 'task' in request.json:
+    if not request.form or 'task' not in request.form or 'animal_id' not in request.form:
         abort(400)
-    event = {
-        'id': events[-1]['id'] + 1,
-        'task': request.json['task'],
-    }
-    events.append(event)
-    return jsonify({'event': event}), 201
+    a_id = int(request.form["animal_id"])
+    a = Animal.query.get_or_404(a_id)
 
-@app.route('/sanctuary/api/events/<int:id>', methods=['PUT'])
+    event = Event()
+    event.task = str(request.form["task"])
+    event.animal = a
+
+    if "due" in request.form:
+        event.due = str(request.form["due"])
+
+    db.session.add(event)
+    db.session.commit()
+
+    response = jsonify({'events': [event.json_dump()]})
+    response.status_code = 201
+    response.headers["Location"] = url_for("get_event", event_id=event.id)
+    return response
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['PUT', 'PATCH'])
 def update_event(event_id):
-    event = [event for event in events if event['id'] == event_id]
-    if len(event) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'task' in request.json and type(request.json['task']) != unicode:
-        abort(400)
-    if 'due' in request.json and type(request.json['due']) is not unicode:
-        abort(400)
-    event[0]['task'] = request.json.get('task', event[0]['task'])
-    event[0]['due'] = request.json.get('due', event[0]['due'])
-    return jsonify({'event': event[0]})
+    event = Event.query.get_or_404(event_id)
 
-@app.route('/sanctuary/api/events/<int:id>', methods=['DELETE'])
+    if "task" in request.values:
+        event.task = str(request.values["task"])
+    if "due" in request.values:
+        event.due = str(request.values["due"])
+    if "animal_id" in request.values:
+        a = Animal.query.get_or_404(int(request.values["animal_id"]))
+        event.animal = a
+
+@app.route('/sanctuary/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
-    event = [event for event in events if event['id'] == event_id]
-    if len(event) == 0:
-        abort(404)
-    events.remove(event[0])
-    return jsonify({'result': True})
+     the_event = Event.query.get_or_404(event_id)
+     db.session.delete(the_event)
+     db.session.commit()
+     return "", 204
 
 def make_public_event(event):
     new_event = {}

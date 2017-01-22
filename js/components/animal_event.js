@@ -1,37 +1,37 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import $ from 'jquery';
 
 const AnimalEvent = React.createClass({
   getInitialState: function() {
     return { events: [] }
   },
 
+  refreshFromServer: function () {
+    let that = this;
+    $.getJSON(`/sanctuary/api/events/animal/${this.props.animalId}`,
+      function (response) {
+        that.setState({events: response.events})
+      }
+    );
+  },
+
   componentDidMount() {
-    var that = this;
+    this.refreshFromServer();
+  },
 
-    $.getJSON(`http://localhost:5000/sanctuary/api/events`,
-    function(response) {
-      that.setState({ events: response.events })
+  runRender: function () {
+    if (this.state.events[0] != null) {
+      var animalEvents = this.state.events.map((animalEvent) => {
+        return (
+          <div key={animalEvent.id}>
+            <li>{ animalEvent.task }, Due date: { animalEvent.due }</li>
+          </div>
+        );
+      });
     }
-  )},
-
-  runRender: function() {
-    if(this.state.events[0] != null) {
-      var animalEvents = this.state.events.map((animalEvent) =>
-        {
-          if(animalEvent.animal_id == this.props.animalId) {
-            return (
-              <div key={animalEvent.id}>
-                <li>{ animalEvent.task }, Due date: { animalEvent.due }</li>
-              </div>
-            )
-          }
-        }
-      );
-      return (
-        <ul>{animalEvents}</ul>
-      )
-    }
+    return (
+      <ul>{animalEvents}</ul>
+    );
   },
 
   render() {
@@ -42,5 +42,9 @@ const AnimalEvent = React.createClass({
     )
   }
 })
+
+AnimalEvent.defaultProps = {
+  animalId: -1,
+};
 
 export default AnimalEvent;
