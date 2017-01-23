@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
