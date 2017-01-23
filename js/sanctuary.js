@@ -25,7 +25,6 @@ const Sanctuary = React.createClass({
   },
 
   deleteAnimal(animal) {
-    // let callback = this.props.onAdd;
     var self = this;
 
     $.ajax({
@@ -34,7 +33,6 @@ const Sanctuary = React.createClass({
       success: function(result) {
         var animals = self.state.animals;
         self.setState({ animals: animals });
-        // complete: callback
       }
     });
     this.refreshFromServer();
