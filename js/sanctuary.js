@@ -25,6 +25,7 @@ const Sanctuary = React.createClass({
   },
 
   deleteAnimal(animal) {
+    confirm('Are you sure you want to delete this animal?');
     var self = this;
 
     $.ajax({

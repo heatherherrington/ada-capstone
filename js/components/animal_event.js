@@ -20,6 +20,7 @@ const AnimalEvent = React.createClass({
   },
 
   deleteEvent(animalEvent) {
+    confirm('Are you sure you want to delete this task?');
     var self = this;
 
     $.ajax({
