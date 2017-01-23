@@ -24,11 +24,27 @@ const Sanctuary = React.createClass({
     this.refreshFromServer();
   },
 
+  deleteAnimal(animal) {
+    // let callback = this.props.onAdd;
+    var self = this;
+
+    $.ajax({
+      url: `/sanctuary/api/animals/${animal.id}`,
+      type: 'DELETE',
+      success: function(result) {
+        var animals = self.state.animals;
+        self.setState({ animals: animals });
+        // complete: callback
+      }
+    });
+    this.refreshFromServer();
+  },
+
   runRender: function () {
     if (this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
       <div key={animal.id}>
-        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link></li>
+        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link> <button onClick={this.deleteAnimal.bind(this, animal)}>Delete Animal</button></li>
       </div>
     );
     return (

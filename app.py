@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/sanctuaries'
 heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
@@ -240,13 +240,12 @@ def create_animal():
     animals.append(animal)
     return jsonify({'animal': animal}), 201
 
-@app.route('/sanctuary/api/animals/<int:id>', methods=['DELETE'])
+@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['DELETE'])
 def delete_animal(animal_id):
-    animal = [animal for animal in animals if animal['id'] == animal_id]
-    if len(animal) == 0:
-        abort(404)
-    animals.remove(animal[0])
-    return jsonify({'result': True})
+    the_animal = Animal.query.get_or_404(animal_id)
+    db.session.delete(the_animal)
+    db.session.commit()
+    return "", 204
 
 def make_public_animal(animal):
     new_animal = {}

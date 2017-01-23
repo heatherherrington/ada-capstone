@@ -2,10 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 
 export default React.createClass({
-  // getInitialState: function() {
-  //   return { name: null }
-  // },
-
   handleClick() {
     let callback = this.props.onAdd;
     let name = this.refs.name.value;
