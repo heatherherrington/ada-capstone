@@ -20,18 +20,20 @@ const AnimalEvent = React.createClass({
   },
 
   deleteEvent(animalEvent) {
-    confirm('Are you sure you want to delete this task?');
-    var self = this;
+    var message = 'Are you sure you want to delete this animal?'
+    if (!confirm(message)) {
+      return false
+    }
+    else {
+      var self = this;
+      var callback = this.refreshFromServer;
 
-    $.ajax({
-      url: `/sanctuary/api/events/${animalEvent.id}`,
-      type: 'DELETE',
-      success: function(result) {
-        var events = self.state.events;
-        self.setState({ events: events });
-      }
-    });
-    this.refreshFromServer();
+      $.ajax({
+        url: `/sanctuary/api/events/${animalEvent.id}`,
+        type: 'DELETE',
+        complete: callback,
+      });
+    }
   },
 
   runRender: function () {

@@ -25,18 +25,20 @@ const Sanctuary = React.createClass({
   },
 
   deleteAnimal(animal) {
-    confirm('Are you sure you want to delete this animal?');
-    var self = this;
+    var message = 'Are you sure you want to delete this animal?'
+    if (!confirm(message)) {
+      return false
+    }
+    else {
+      var self = this;
+      var callback = this.refreshFromServer;
 
-    $.ajax({
-      url: `/sanctuary/api/animals/${animal.id}`,
-      type: 'DELETE',
-      success: function(result) {
-        var animals = self.state.animals;
-        self.setState({ animals: animals });
-      }
-    });
-    this.refreshFromServer();
+      $.ajax({
+        url: `/sanctuary/api/animals/${animal.id}`,
+        type: 'DELETE',
+        complete: callback,
+      });
+    }
   },
 
   runRender: function () {
