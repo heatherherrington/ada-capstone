@@ -45,7 +45,7 @@ const Sanctuary = React.createClass({
     if (this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
       <div key={animal.id}>
-        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link> <button onClick={this.deleteAnimal.bind(this, animal)}>Delete Animal</button></li>
+        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link> <i className="fa fa-trash-o" aria-hidden="true" onClick={this.deleteAnimal.bind(this, animal)}></i></li>
       </div>
     );
     return (

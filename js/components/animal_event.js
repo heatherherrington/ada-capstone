@@ -41,7 +41,7 @@ const AnimalEvent = React.createClass({
       var animalEvents = this.state.events.map((animalEvent) => {
         return (
           <div key={animalEvent.id}>
-            <li>{ animalEvent.task }, Due date: { animalEvent.due } <button onClick={this.deleteEvent.bind(this, animalEvent)}>Delete Task</button></li>
+            <li>{ animalEvent.task }, Due date: { animalEvent.due } <i className="fa fa-trash-o" aria-hidden="true" onClick={this.deleteEvent.bind(this, animalEvent)}></i></li>
           </div>
         );
       });
