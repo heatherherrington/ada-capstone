@@ -4,12 +4,11 @@ class Footer extends React.Component {
   render() {
     var footerStyle = {
       padding: 10,
-      // margin: 10,
       backgroundColor: "lightgrey",
       color: "black",
       display: "block",
-      // fontFamily: "monospace",
-      // fontSize: "32",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "16",
       textAlign: "center"
     };
 

@@ -3,10 +3,11 @@ import React from 'react';
 class Main extends React.Component {
   render() {
     var mainStyle = {
-      color: "black",
-      display: "block",
-      width: "300",
-      // fontFamily: "monospace",
+      paddingTop: 20,
+      width: 200,
+      marginLeft: "auto",
+      marginRight: "auto",
+      fontFamily: "Raleway, sans-serif",
       fontSize: "20",
       textAlign: "center"
     };

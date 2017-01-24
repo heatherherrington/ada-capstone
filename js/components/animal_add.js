@@ -14,9 +14,17 @@ export default React.createClass({
   },
 
   render() {
+    var addingAnimalForm = {
+      paddingBottom: 10,
+      display: "block",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     return (
-      <div>
-        <input ref='name' placeholder='Enter the name of your animal'/>
+      <div style={addingAnimalForm}>
+        <input ref='name' placeholder='Animal name'/>
         <button onClick={this.handleClick}>Submit</button>
       </div>
     )

@@ -16,11 +16,19 @@ const EventAdd = React.createClass({
   },
 
   render: function () {
+    var addingEventForm = {
+      paddingBottom: 10,
+      display: "block",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     console.log("EventAdd.render()");
     return (
-      <div>
-        <input ref='task' placeholder='Enter the task'/>
-        <input ref='due' placeholder='Enter the due date, in month/date/year format'/>
+      <div style={addingEventForm}>
+        <input ref='task' placeholder='Task'/>
+        <input ref='due' placeholder='Due date'/>
         <input ref='animal_id' type="hidden" value={this.props.animalId}/>
         <button onClick={this.handleClick}>Add Task</button>
       </div>

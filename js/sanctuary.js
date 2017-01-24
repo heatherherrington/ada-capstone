@@ -42,6 +42,14 @@ const Sanctuary = React.createClass({
   },
 
   runRender: function () {
+    var animalList = {
+      padding: 5,
+      display: "inline",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     if (this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
       <div key={animal.id}>
@@ -49,12 +57,19 @@ const Sanctuary = React.createClass({
       </div>
     );
     return (
-      <ul>{animals}</ul>
+      <ul style={animalList}>{animals}</ul>
     )
     };
   },
 
   render() {
+    var sanctuaryName = {
+      display: "block",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "28",
+      textAlign: "center"
+    };
+
     let self = this;
     let onAdd = function () {
       console.log("Sanctuary onAdd callback called.");
@@ -65,7 +80,7 @@ const Sanctuary = React.createClass({
     return (
       <div>
         <Header />
-        <h1>Hope Haven Farm Sanctuary</h1>
+        <h1 style={sanctuaryName}>Hope Haven Farm Sanctuary</h1>
         { this.runRender() }
         <AnimalAdd onAdd={onAdd}/>
         <Footer />

@@ -1,14 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class Header extends React.Component {
   render() {
     var headerStyle = {
-      padding: 30,
-      // margin: 10,
+      padding: 20,
       backgroundColor: "magenta",
       color: "white",
       display: "block",
-      // fontFamily: "monospace",
+      fontFamily: "Lobster, cursive",
       fontSize: "32",
       textAlign: "center"
     };

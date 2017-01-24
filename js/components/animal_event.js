@@ -37,6 +37,14 @@ const AnimalEvent = React.createClass({
   },
 
   runRender: function () {
+    var eventList = {
+      padding: 5,
+      display: "inline",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     if (this.state.events[0] != null) {
       var animalEvents = this.state.events.map((animalEvent) => {
         return (
@@ -47,7 +55,7 @@ const AnimalEvent = React.createClass({
       });
     }
     return (
-      <ul>{animalEvents}</ul>
+      <ul style={eventList}>{animalEvents}</ul>
     );
   },
 

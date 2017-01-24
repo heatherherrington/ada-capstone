@@ -26,6 +26,13 @@ const Animal = React.createClass({
   },
 
   render() {
+    var animalName = {
+      display: "block",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "28",
+      textAlign: "center"
+    };
+    
     let self = this;
     let onAdd = function () {
       console.log("Animal onAdd callback called.");
@@ -35,7 +42,7 @@ const Animal = React.createClass({
     return (
       <div>
         <Header />
-        <h2>{this.state.animal.name}</h2>
+        <h2 style={animalName}>{this.state.animal.name}</h2>
         <AnimalEvent ref="eventList" animalId={this.props.params.id}/>
         <EventAdd ref="eventAdd" animalId={this.props.params.id} onAdd={onAdd}/>
         <Footer />

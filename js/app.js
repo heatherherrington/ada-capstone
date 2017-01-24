@@ -7,11 +7,18 @@ import { Link } from 'react-router';
 
 export default React.createClass({
   render() {
+    var sanctuaryLink = {
+      display: "block",
+      fontFamily: "Raleway, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     return (
       <div>
         <Header />
         <Main />
-        <p><Link to="/sanctuary">Sanctuary</Link></p>
+        <p style={sanctuaryLink}><Link to="/sanctuary">Sanctuary</Link></p>
         <Footer />
       </div>
     )
