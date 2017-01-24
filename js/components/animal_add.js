@@ -6,7 +6,7 @@ export default React.createClass({
     let callback = this.props.onAdd;
     let name = this.refs.name.value;
     $.ajax({
-      url: '/animal',
+      url: '/sanctuary/api/animals',
       type: 'POST',
       data: {name: name},
       complete: callback,
