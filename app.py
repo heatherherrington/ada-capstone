@@ -263,13 +263,17 @@ def get_events():
 
 @app.route('/sanctuary/api/events/animal/<int:animal_id>', methods=['GET'])
 def get_events_for_animal(animal_id):
-    call_events = Event.query.filter_by(animal_id=animal_id).all()
+    call_events = Event.query.filter_by(animal_id=animal_id).order_by(Event.id).all()
     return jsonify({'events': [event.json_dump() for event in call_events]})
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
 def get_event(event_id):
-    call_event = Event.query.get_or_404(event_id)
-    return jsonify({'events': [call_event.json_dump()]})
+    if "animal_id" in request.values:
+         a = Animal.query.get_or_404(int(request.values["animal_id"]))
+         event.animal = a
+    return "", 204
+    # call_event = Event.query.get_or_404(event_id)
+    # return jsonify({'events': [call_event.json_dump()]})
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():

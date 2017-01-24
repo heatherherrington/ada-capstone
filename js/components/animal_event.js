@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimalEventItem from './animal_event_item';
 import $ from 'jquery';
 
 const AnimalEvent = React.createClass({
@@ -19,21 +20,14 @@ const AnimalEvent = React.createClass({
     this.refreshFromServer();
   },
 
-  deleteEvent(animalEvent) {
-    var message = 'Are you sure you want to delete this animal?'
-    if (!confirm(message)) {
-      return false
-    }
-    else {
-      var self = this;
-      var callback = this.refreshFromServer;
+  eventDidUpdate(animalEvent) {
+    console.log("AnimalEvent.eventDidUpdate() called");
+    this.refreshFromServer();
+  },
 
-      $.ajax({
-        url: `/sanctuary/api/events/${animalEvent.id}`,
-        type: 'DELETE',
-        complete: callback,
-      });
-    }
+  eventDidDelete(animalEvent) {
+    console.log("AnimalEvent.eventDidDelete() called");
+    this.refreshFromServer();
   },
 
   runRender: function () {
@@ -48,9 +42,10 @@ const AnimalEvent = React.createClass({
     if (this.state.events[0] != null) {
       var animalEvents = this.state.events.map((animalEvent) => {
         return (
-          <div key={animalEvent.id}>
-            <li>{ animalEvent.task }, Due date: { animalEvent.due } <i className="fa fa-trash-o" aria-hidden="true" onClick={this.deleteEvent.bind(this, animalEvent)}></i></li>
-          </div>
+          <AnimalEventItem key={animalEvent.id}
+                          event={animalEvent}
+                          onDelete={this.eventDidDelete.bind(this, animalEvent)}
+                          onCommitEdit={this.eventDidUpdate.bind(this, animalEvent)}/>
         );
       });
     }
