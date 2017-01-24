@@ -9,7 +9,7 @@ export default React.createClass({
   render() {
     var sanctuaryLink = {
       display: "block",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "20",
       textAlign: "center"
     };

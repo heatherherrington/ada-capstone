@@ -7,7 +7,7 @@ class Footer extends React.Component {
       backgroundColor: "lightgrey",
       color: "black",
       display: "block",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "16",
       textAlign: "center"
     };

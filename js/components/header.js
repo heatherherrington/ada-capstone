@@ -5,10 +5,10 @@ class Header extends React.Component {
   render() {
     var headerStyle = {
       padding: 20,
-      backgroundColor: "magenta",
+      backgroundColor: "purple",
       color: "white",
       display: "block",
-      fontFamily: "Lobster, cursive",
+      fontFamily: "Mogra, cursive",
       fontSize: "32",
       textAlign: "center"
     };

@@ -34,7 +34,7 @@ const AnimalEvent = React.createClass({
     var eventList = {
       padding: 5,
       display: "inline",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "20",
       textAlign: "center"
     };

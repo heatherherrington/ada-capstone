@@ -28,7 +28,7 @@ const Animal = React.createClass({
   render() {
     var animalName = {
       display: "block",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "28",
       textAlign: "center"
     };

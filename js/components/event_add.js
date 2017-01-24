@@ -21,7 +21,7 @@ const EventAdd = React.createClass({
     var addingEventForm = {
       paddingBottom: 10,
       display: "block",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "20",
       textAlign: "center"
     };

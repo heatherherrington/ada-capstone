@@ -45,7 +45,7 @@ const Sanctuary = React.createClass({
     var animalList = {
       padding: 5,
       display: "inline",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "20",
       textAlign: "center"
     };
@@ -65,7 +65,7 @@ const Sanctuary = React.createClass({
   render() {
     var sanctuaryName = {
       display: "block",
-      fontFamily: "Raleway, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSize: "28",
       textAlign: "center"
     };
