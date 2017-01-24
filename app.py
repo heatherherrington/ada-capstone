@@ -1,5 +1,6 @@
-from flask import Flask, redirect, render_template, session, jsonify, abort, make_response, request, url_for
+from flask import Flask, render_template, jsonify, abort, request, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+import psycopg2
 
 from flask.ext.heroku import Heroku
 
@@ -9,14 +10,12 @@ heroku = Heroku(app)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
-
 # NON-API ROUTES
 @app.route('/animal/<int:animal_id>')
 @app.route('/sanctuary')
 @app.route('/')
 def index(animal_id=None):
     return render_template('index.html')
-
 
 # DATABASE
 # SANCTUARY
@@ -38,9 +37,6 @@ class Sanctuary(db.Model):
         info = " id=%s name=%r num_animals=%d" % (self.id, self.name, len(self.animals))
         rv = rv[:-1] + info + rv[-1]
         return rv
-
-        # def __repr__(self):
-        #     return '<Sanctuary name %r>' % self.name
 
 # ANIMAL
 class Animal(db.Model):
@@ -95,150 +91,87 @@ class Event(db.Model):
     def __repr__(self):
         return '<Due date %r>' % self.due
 
-
-# Save sanctuary name to database
-@app.route('/sanc', methods=['POST'])
-def sanc():
-    name = None
-    if request.method == 'POST':
-        name = request.form['name']
-        # Check that name does not already exist (not a great query, but works)
-        if not db.session.query(Sanctuary).filter(Sanctuary.name == name).count():
-            reg = Sanctuary(name)
-            db.session.add(reg)
-            db.session.commit()
-            # return render_template('success.html')
-    return render_template('index.html')
-
-# Save animal name to database
-@app.route('/animal', methods=['POST'])
-def animal():
-    # print("HI")
-    # print(request.method)
-    # print(request.method == 'POST')
-    name = None
-    if request.method == 'POST':
-        # print(request.form)
-        name = request.form['name']
-        # Check that animal does not already exist (not a great query, but works)
-        if not db.session.query(Animal).filter(Animal.name == name).count():
-            reg = Animal(name)
-            db.session.add(reg)
-            db.session.commit()
-            # return render_template('success.html')
-    return render_template('index.html')
-
-# Save event task and due date to database
-@app.route('/task', methods=['POST'])
-def task():
-    task = None
-    due = None
-    if request.method == 'POST':
-        task = request.form['task']
-        due = request.form['due']
-        animal_id = request.form['animal_id']
-        reg = Event(task, due, animal_id)
-        db.session.add(reg)
-        db.session.commit()
-            # return render_template('success.html')
-    return render_template('index.html')
-
-# Edit event task or due date - I strongly feel this is wrong.
-@app.route('/edittask', methods=['PUT'])
-def edittask():
-    task = None
-    due = None
-    if request.method == 'PUT':
-        task = request.form['task']
-        due = request.form['due']
-        # Check that task already exists (not a great query, but works)
-        if db.session.query(Event).filter(Event.task == task).count():
-            reg_task = Event(task)
-            reg_due = Event(due)
-            db.session.add(reg_task)
-            db.session.add(reg_due)
-            db.session.commit()
-            # return render_template('success.html')
-    return render_template('index.html')
-
-# Delete event task and due date - no clue how to do this.
-@app.route('/deletetask', methods=['DELETE'])
-def deletetask():
-    task = None
-    due = None
-    if request.method == 'DELETE':
-        task = request.form['task']
-        due = request.form['due']
-        # Check that task already exists (not a great query, but works)
-        if db.session.query(Event).filter(Event.task == task).count():
-            reg_task = Event(task)
-            reg_due = Event(due)
-            db.session.add(reg_task)
-            db.session.add(reg_due)
-            db.session.commit()
-            # return render_template('success.html')
-    return render_template('index.html')
-
-
 # API
 # SANCTUARIES
 @app.route('/sanctuary/api/sanctuaries', methods=['GET'])
 def get_sanctuaries():
-    call_sanctuaries = Sanctuary.query.all()
+    call_sanctuaries = Sanctuary.query.order_by(Sanctuary.id).all()
+    return jsonify({'sanctuaries': [sanctuary.json_dump() for sanctuary in call_sanctuaries]}), 200
 
-    return jsonify({'sanctuaries': [sanctuary.json_dump() for sanctuary in call_sanctuaries]})
-
-@app.route('/sanctuary/api/sanctuaries/<int:id>', methods=['GET'])
-def get_sanctuary(id):
-    call_sanctuary = Sanctuary.query.get_or_404(id)
-    return jsonify(sanctuaries = [call_sanctuary.json_dump()])
+@app.route('/sanctuary/api/sanctuaries/<int:sanc_id>', methods=['GET'])
+def get_sanctuary(sanc_id):
+    call_sanctuary = Sanctuary.query.get_or_404(sanc_id)
+    return jsonify({"sanctuaries": [call_sanctuary.json_dump()]}), 200
 
 @app.route('/sanctuary/api/sanctuaries', methods=['POST'])
 def create_sanctuary():
-    if not request.json or not 'name' in request.json:
+    if not request.form or 'name' not in request.form:
         abort(400)
-    sanctuary = {
-        'id': db[-1]['id'] + 1,
-        'name': request.json['name'],
-    }
-    db.append(sanctuary)
-    return jsonify({'sanctuary': sanctuary}), 201
+    s = Sanctuary()
+    s.name = request.form["name"]  # Probably want a unique constraint on `name` in the database
+    db.session.add(s)
+    db.session.commit()
 
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    response = jsonify({'sanctuaries': [s.json_dump()]})
+    response.status_code = 201
+    response.headers["Location"] = url_for("get_sanctuary", sanc_id=s.id)
+    return response
 
-def make_public_sanctuary(sanctuary):
-    new_sanctuary = {}
-    for field in sanctuary:
-        if field == 'id':
-            new_sanctuary['uri'] = url_for('get_sanctuary', id=sanctuary['id'], _external=True)
-        new_sanctuary[field] = sanctuary[field]
-    return new_sanctuary
+@app.route('/sanctuary/api/sanctuaries/<int:sanc_id>', methods=['DELETE'])
+def delete_sanctuary(sanc_id):
+    call_sanctuary = Sanctuary.query.get_or_404(sanc_id)
+    db.session.delete(call_sanctuary)
+    db.session.commit()
+    return "", 204
 
+@app.route('/sanctuary/api/sanctuaries/<int:sanc_id>', methods=['PUT', 'PATCH'])
+def update_sanctuary(sanc_id):
+    sanctuary = Sanctuary.query.get_or_404(sanc_id)
+    if "name" in request.values:
+        sanctuary.name = request.values["name"]
+    if "animals" in request.values:
+        raise NotImplementedError()
+    return "", 204
 
 # ANIMALS
 @app.route('/sanctuary/api/animals', methods=['GET'])
 def get_animals():
-    call_animals = Animal.query.all()
+    all_animals = Animal.query.order_by(Animal.id).all()
+    rv = jsonify({'animals': [the_animal.json_dump() for the_animal in all_animals]})
+    return rv
 
-    return jsonify({'animals': [animal.json_dump() for animal in call_animals]})
+@app.route('/sanctuary/api/animals/sanctuary/<int:sanctuary_id>', methods=['GET'])
+def get_animals_for_sanctuary(sanctuary_id):
+    all_animals = Animal.query.filter_by(sanctuary_id=sanctuary_id).order_by(Animal.id).all()
+    rv = jsonify({'animals': [the_animal.json_dump() for the_animal in all_animals]})
+    return rv
 
-@app.route('/sanctuary/api/animals/<int:id>', methods=['GET'])
-def get_animal(id):
-    call_animal = Animal.query.get_or_404(id)
-    return jsonify(animals = [call_animal.json_dump()])
+@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['GET'])
+def get_animal(animal_id):
+    call_animal = Animal.query.get_or_404(animal_id)
+    return jsonify({'animals': [call_animal.json_dump()]}), 200
 
 @app.route('/sanctuary/api/animals', methods=['POST'])
 def create_animal():
-    if not request.json or not 'name' in request.json:
-        abort(400)
-    animal = {
-        # 'id': animals[-1]['id'] + 1,
-        'name': request.json['name'],
-    }
-    animals.append(animal)
-    return jsonify({'animal': animal}), 201
+    the_name = request.form['name']
+    new_animal = Animal()
+    new_animal.name = the_name
+    if "sanctuary_id" in request.form:
+        sanc_id = int(request.form["sanctuary_id"])
+        s = Sanctuary.query.get_or_404(sanc_id)
+        new_animal.sanctuary = s
+
+    db.session.add(new_animal)
+    try:
+        db.session.commit()
+    except psycopg2.IntegrityError:
+        # This means user tried to add another animal with the same name as an extant animal
+        abort(409)  # 409 => Conflict
+
+    response = jsonify({'animals': [new_animal.json_dump()]})
+    response.status_code = 201
+    response.headers["Location"] = url_for("get_animal", animal_id=new_animal.id)
+    return response
 
 @app.route('/sanctuary/api/animals/<int:animal_id>', methods=['DELETE'])
 def delete_animal(animal_id):
@@ -247,18 +180,33 @@ def delete_animal(animal_id):
     db.session.commit()
     return "", 204
 
+@app.route('/sanctuary/api/animals/<int:animal_id>', methods=['PUT', 'PATCH'])
+def update_animal(animal_id):
+    the_animal = Animal.query.get_or_404(animal_id)
+
+    if "name" in request.values:
+        the_animal.name = str(request.values["name"])
+
+    if "sanctuary_id" in request.values:
+        the_animal.sanctuary = Sanctuary.query.get_or_404(int(request.values["sanctuary_id"]))
+
+    if "events" in request.values:
+        raise NotImplementedError()
+
+    return "", 204
+
 def make_public_animal(animal):
     new_animal = {}
     for field in animal:
         if field == 'id':
-            new_animal['uri'] = url_for('get_animal', id=animal['id'], _external=True)
+            new_animal['uri'] = url_for('get_animal', id=animal.id, _external=True)
         new_animal[field] = animal[field]
     return new_animal
 
 # EVENTS
 @app.route('/sanctuary/api/events', methods=['GET'])
 def get_events():
-    call_events = Event.query.all()
+    call_events = Event.query.order_by(Event.id).all()
     return jsonify({'events': [event.json_dump() for event in call_events]})
 
 @app.route('/sanctuary/api/events/animal/<int:animal_id>', methods=['GET'])
@@ -268,17 +216,14 @@ def get_events_for_animal(animal_id):
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['GET'])
 def get_event(event_id):
-    if "animal_id" in request.values:
-         a = Animal.query.get_or_404(int(request.values["animal_id"]))
-         event.animal = a
-    return "", 204
-    # call_event = Event.query.get_or_404(event_id)
-    # return jsonify({'events': [call_event.json_dump()]})
+    call_event = Event.query.get_or_404(event_id)
+    return jsonify({'events': [call_event.json_dump()]})
 
 @app.route('/sanctuary/api/events', methods=['POST'])
 def create_event():
     if not request.form or 'task' not in request.form or 'animal_id' not in request.form:
         abort(400)
+
     a_id = int(request.form["animal_id"])
     a = Animal.query.get_or_404(a_id)
 
@@ -308,6 +253,7 @@ def update_event(event_id):
     if "animal_id" in request.values:
         a = Animal.query.get_or_404(int(request.values["animal_id"]))
         event.animal = a
+    return "", 204
 
 @app.route('/sanctuary/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):

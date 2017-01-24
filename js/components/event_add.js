@@ -13,6 +13,8 @@ const EventAdd = React.createClass({
       data: {task: task, due: due, animal_id: this.props.animalId},
       complete: callback,
     });
+    this.refs.task.value = null;
+    this.refs.due.value = null;
   },
 
   render: function () {
