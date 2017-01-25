@@ -1,23 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router';
 import ReactDOM from 'react-dom';
 
 class Header extends React.Component {
   render() {
     var headerStyle = {
-      padding: 20,
+      padding: 50,
       backgroundColor: "purple",
       color: "white",
       display: "block",
       fontFamily: "Mogra, cursive",
-      fontSize: "32",
-      textAlign: "center"
+      fontSize: "50",
+      textAlign: "center",
+      textDecoration: "none",
+      fontWeight: "bold"
     };
 
     return (
-      <div style={headerStyle}>
-        <nav>
-          <h1>Sanctuary Secretary</h1>
-        </nav>
+      <div>
+        <Link to={`/`} style={headerStyle}>Sanctuary Secretary</Link>
       </div>
     );
   }
