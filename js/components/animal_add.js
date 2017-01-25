@@ -26,9 +26,15 @@ export default React.createClass({
       textAlign: "center"
     };
 
+    var animalInputForm = {
+      fontFamily: "Roboto, sans-serif",
+      fontSize: "13",
+      textAlign: "center"
+    };
+
     return (
       <div style={addingAnimalForm}>
-        <input ref='name' placeholder='Animal name'/>
+        <input style={animalInputForm} ref='name' placeholder='Animal name'/>
         <i className="fa fa-paw" style={iconFont} aria-hidden="true" onClick={this.handleClick}></i>
       </div>
     )

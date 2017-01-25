@@ -42,6 +42,10 @@ const Sanctuary = React.createClass({
   },
 
   runRender: function () {
+    var iconFont = {
+      paddingLeft: 15,
+    };
+
     var animalList = {
       padding: 5,
       display: "inline",
@@ -53,7 +57,7 @@ const Sanctuary = React.createClass({
     if (this.state.animals[0] != null) {
       var animals = this.state.animals.map((animal) =>
       <div key={animal.id}>
-        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link> <i className="fa fa-trash-o" aria-hidden="true" onClick={this.deleteAnimal.bind(this, animal)}></i></li>
+        <li><Link to={`/animal/${animal.id}`}>{ animal.name }</Link> <i className="fa fa-trash-o" style={iconFont} aria-hidden="true" onClick={this.deleteAnimal.bind(this, animal)}></i></li>
       </div>
     );
     return (

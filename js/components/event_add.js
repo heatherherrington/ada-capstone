@@ -29,10 +29,16 @@ const EventAdd = React.createClass({
       textAlign: "center"
     };
 
+    var eventInputForm = {
+      fontFamily: "Roboto, sans-serif",
+      fontSize: "13",
+      textAlign: "center"
+    };
+
     return (
       <div style={addingEventForm}>
-        <input ref='task' placeholder='Task'/>
-        <input ref='due' placeholder='Due date'/>
+        <input style={eventInputForm} ref='task' placeholder='Task'/>
+        <input style={eventInputForm} ref='due' placeholder='Due date'/>
         <input ref='animal_id' type="hidden" value={this.props.animalId}/>
         <i className="fa fa-plus" style={iconFont} aria-hidden="true" onClick={this.handleClick}></i>
       </div>
