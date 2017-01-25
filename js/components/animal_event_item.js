@@ -68,6 +68,12 @@ const AnimalEventItem = React.createClass({
       paddingLeft: 15,
     };
 
+    var eventEditForm = {
+      fontFamily: "Roboto, sans-serif",
+      fontSize: "20",
+      textAlign: "center"
+    };
+
     if (!this.state.editing) {
       return (
         <div key={this.props.event.id}>
@@ -81,8 +87,8 @@ const AnimalEventItem = React.createClass({
       return (
         <div key={this.props.event.id}>
           <li>
-            <input ref='task' defaultValue={this.state.task}/>
-            <input ref='due' defaultValue={this.state.due}/>
+            <input style={eventEditForm} ref='task' defaultValue={this.state.task}/>
+            <input style={eventEditForm} ref='due' defaultValue={this.state.due}/>
             <input ref='event_id' type="hidden" value={this.props.event.id}/>
             <input ref='animal_id' type="hidden" value={this.props.event.animal_id}/>
             <i className="fa fa-check-circle-o" style={iconFont} aria-hidden="true" onClick={this.commitEditing}></i>
