@@ -3,7 +3,6 @@ import $ from 'jquery';
 
 const EventAdd = React.createClass({
   handleClick() {
-    console.log("EventAdd.handleClick()");
     let task = this.refs.task.value;
     let due = this.refs.due.value;
     let callback = this.props.onAdd;
@@ -26,7 +25,6 @@ const EventAdd = React.createClass({
       textAlign: "center"
     };
 
-    console.log("EventAdd.render()");
     return (
       <div style={addingEventForm}>
         <input ref='task' placeholder='Task'/>
@@ -41,7 +39,6 @@ const EventAdd = React.createClass({
 EventAdd.defaultProps = {
   animalId: -1,
   onAdd: function () {
-    console.log("Default callback called");
   },
 };
 

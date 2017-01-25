@@ -11,12 +11,10 @@ const AnimalEventItem = React.createClass({
   },
 
   beginEditing() {
-    console.log("AnimalEventItem.beginEditing() called");
     this.setState({editing: true});
   },
 
   commitEditing() {
-    console.log("AnimalEventItem.commitEditing() called");
     let self = this;
     let payload = {};
     let new_task_value = this.refs.task.value;
@@ -31,7 +29,6 @@ const AnimalEventItem = React.createClass({
     }
 
     let callback = function () {
-      console.log("AnimalEventItem.commitEditing().callback called");
       self.props.onCommitEdit();
       self.setState({
         editing: false,
@@ -49,7 +46,6 @@ const AnimalEventItem = React.createClass({
   },
 
   cancelEditing() {
-    console.log("AnimalEventItem.cancelEditing() called");
     this.setState(this.getInitialState());
   },
 

@@ -11,7 +11,6 @@ const Animal = React.createClass({
   },
 
   refreshFromServer: function () {
-    console.log("Animal.refreshFromServer() called.");
     let that = this;
     $.getJSON(`/sanctuary/api/animals/${this.props.params.id}`,
       function (response) {
@@ -21,7 +20,6 @@ const Animal = React.createClass({
   },
 
   componentDidMount() {
-    console.log("Animal.componentDidMount() called.");
     this.refreshFromServer();
   },
 
@@ -32,10 +30,9 @@ const Animal = React.createClass({
       fontSize: "28",
       textAlign: "center"
     };
-    
+
     let self = this;
     let onAdd = function () {
-      console.log("Animal onAdd callback called.");
       self.componentDidMount();
       self.refs.eventList.componentDidMount();
     };

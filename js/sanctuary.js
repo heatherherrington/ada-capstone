@@ -72,10 +72,8 @@ const Sanctuary = React.createClass({
 
     let self = this;
     let onAdd = function () {
-      console.log("Sanctuary onAdd callback called.");
       self.refreshFromServer();
     };
-    console.log("state.animals", this.state.animals);
 
     return (
       <div>

@@ -21,12 +21,10 @@ const AnimalEvent = React.createClass({
   },
 
   eventDidUpdate(animalEvent) {
-    console.log("AnimalEvent.eventDidUpdate() called");
     this.refreshFromServer();
   },
 
   eventDidDelete(animalEvent) {
-    console.log("AnimalEvent.eventDidDelete() called");
     this.refreshFromServer();
   },
 
