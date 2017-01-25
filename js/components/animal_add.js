@@ -14,6 +14,10 @@ export default React.createClass({
   },
 
   render() {
+    var iconFont = {
+      paddingLeft: 15,
+    };
+
     var addingAnimalForm = {
       paddingBottom: 10,
       display: "block",
@@ -25,7 +29,7 @@ export default React.createClass({
     return (
       <div style={addingAnimalForm}>
         <input ref='name' placeholder='Animal name'/>
-        <button onClick={this.handleClick}>Submit</button>
+        <i className="fa fa-paw" style={iconFont} aria-hidden="true" onClick={this.handleClick}></i>
       </div>
     )
   }

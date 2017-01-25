@@ -85,8 +85,8 @@ const AnimalEventItem = React.createClass({
             <input ref='due' defaultValue={this.state.due}/>
             <input ref='event_id' type="hidden" value={this.props.event.id}/>
             <input ref='animal_id' type="hidden" value={this.props.event.animal_id}/>
-            <button onClick={this.commitEditing}>Save</button>
-            <button onClick={this.cancelEditing}>Cancel</button>
+            <i className="fa fa-check-circle-o" style={iconFont} aria-hidden="true" onClick={this.commitEditing}></i>
+            <i className="fa fa-undo" style={iconFont} aria-hidden="true" onClick={this.cancelEditing}></i>
           </li>
         </div>
       );

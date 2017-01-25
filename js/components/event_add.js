@@ -17,6 +17,10 @@ const EventAdd = React.createClass({
   },
 
   render: function () {
+    var iconFont = {
+      paddingLeft: 15,
+    };
+
     var addingEventForm = {
       paddingBottom: 10,
       display: "block",
@@ -30,7 +34,7 @@ const EventAdd = React.createClass({
         <input ref='task' placeholder='Task'/>
         <input ref='due' placeholder='Due date'/>
         <input ref='animal_id' type="hidden" value={this.props.animalId}/>
-        <button onClick={this.handleClick}>Add Task</button>
+        <i className="fa fa-plus" style={iconFont} aria-hidden="true" onClick={this.handleClick}></i>
       </div>
     );
   }
